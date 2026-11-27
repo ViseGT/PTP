@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d3446">
+<title>鋼構吊裝 PTP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: 工地現場的作業板，直接、清楚、可在陽光下看
+   IDEA: 吊裝「劇本」— 像吊車指揮的工作卡，一張一張翻、逐步放行
+   PICTURE: 鋼構吊運路徑剖面：吊鉤沿著 6 個階段移動，節點顯示 V / X
+   COLOUR and TYPE: 鋼構深藍底帶 + 吊車黃重點 + 停工紅/放行綠；Noto Sans TC + Barlow Condensed 數字
+   LAYOUT: iPad 左側步驟欄 + 主作業區；iPhone 底部頁籤、單欄 */
+:root{color-scheme:light dark;
+--bg:light-dark(#efeee9,#0e1317);--card:light-dark(#ffffff,#172028);--card2:light-dark(#f7f6f2,#1d2832);
+--ink:light-dark(#121619,#e8ecef);--mute:light-dark(#59626b,#9aa7b2);--line:light-dark(#d9d6cd,#2b3742);
+--steel:#1d3446;--steel2:#27465c;--crane:#f2b705;--craneInk:#1a1400;--stop:#d3261d;--go:#16824a;--warn:#d98200;
+--stopBg:light-dark(#fdecea,#3a1614);--goBg:light-dark(#e6f4ec,#10301f);--warnBg:light-dark(#fff3dc,#3a2a0c);
+--num:"Barlow Condensed","Noto Sans TC",sans-serif;--r:14px}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Noto Sans TC","PingFang TC","Heiti TC",system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--crane);outline-offset:2px}
+.num{font-family:var(--num);font-weight:700;letter-spacing:.01em}
+/* top */
+#top{background:var(--steel);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20}
+#top .ttl{flex:1;min-width:0}
+#top h1{margin:0;font-size:20px;line-height:1.2;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#top .sub{font-size:13px;color:#b9c9d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:12px;border:1px solid #ffffff33;background:#ffffff12;color:#fff;font-weight:700;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap;line-height:1.3}
+.c-go{background:var(--go);color:#fff}.c-stop{background:var(--stop);color:#fff}.c-warn{background:var(--warn);color:#fff}.c-mute{background:#ffffff22;color:#dfe8ef}.c-y{background:var(--crane);color:var(--craneInk)}
+.c-line{border:1px solid var(--line);color:var(--mute)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* layout */
+.body{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:calc(100vh - 64px)}
+body.home .body{grid-template-columns:minmax(0,1fr)}body.home #nav{display:none}
+#nav{background:var(--card);border-right:1px solid var(--line);padding:14px 10px;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto}
+#nav button{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:8px 12px;border:0;border-radius:12px;background:none;text-align:left;margin-bottom:4px}
+#nav button.on{background:var(--steel);color:#fff}
+#nav button .lb{flex:1;font-weight:700;line-height:1.25}
+#nav button .lb small{display:block;font-weight:400;font-size:13px;color:var(--mute)}
+#nav button.on .lb small{color:#b9c9d6}
+#nav svg{width:24px;height:24px;flex:none}
+.bdg{font-family:var(--num);font-weight:700;font-size:15px;min-width:34px;text-align:center;padding:1px 7px;border-radius:8px;background:var(--card2);border:1px solid var(--line)}
+.on .bdg{color:var(--ink)}
+.bdg.ok{background:var(--go);color:#fff;border-color:var(--go)}.bdg.bad{background:var(--stop);color:#fff;border-color:var(--stop)}
+#main{padding:20px clamp(14px,3vw,32px) 40px;max-width:1100px;width:100%}
+h2{font-size:26px;line-height:1.15;margin:0 0 4px;font-weight:900;text-wrap:balance}
+h3{font-size:18px;margin:0 0 8px;font-weight:900}
+.lead{color:var(--mute);margin:0 0 16px;font-size:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.sec-t{display:flex;align-items:center;gap:10px;margin:22px 0 10px}
+.sec-t h3{margin:0}.sec-t .ln{flex:1;height:1px;background:var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:700;white-space:nowrap;text-decoration:none;color:inherit}
+.btn.pri{background:var(--steel);border-color:var(--steel);color:#fff}
+.btn.y{background:var(--crane);border-color:var(--crane);color:var(--craneInk)}
+.btn.red{background:var(--stop);border-color:var(--stop);color:#fff}
+.btn.grn{background:var(--go);border-color:var(--go);color:#fff}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sp{flex:1}
+input[type=text],input[type=number],input[type=search],select,textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card2);font-size:16px}
+textarea{min-height:76px;resize:vertical;line-height:1.5}
+label.f{display:block;font-size:14px;font-weight:700;margin:12px 0 6px}
+.hint{font-size:13px;color:var(--mute);line-height:1.45}
+/* segmented */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card2);flex-wrap:wrap}
+.seg button{min-height:44px;padding:0 14px;border:0;background:none;font-weight:700;font-size:15px;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.on.ok{background:var(--go);color:#fff}.seg button.on.bad{background:var(--stop);color:#fff}.seg button.on.na{background:#6b7680;color:#fff}.seg button.on.pd{background:var(--crane);color:var(--craneInk)}.seg button.on{background:var(--steel);color:#fff}
+.tg{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card2);font-weight:700;font-size:15px}
+.tg.on{background:var(--steel);border-color:var(--steel);color:#fff}
+/* info items */
+.it{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) auto;gap:12px 16px;padding:14px 0;border-top:1px solid var(--line);align-items:start}
+.it:first-of-type{border-top:0}
+.it .nm{font-weight:700}.it .nm .hint{font-weight:400;margin-top:2px}
+.it.bad{background:var(--stopBg);margin:0 -16px;padding:14px 16px}
+@media(max-width:900px){.it{grid-template-columns:minmax(0,1fr)}.it .seg{justify-self:start}}
+.wind{display:flex;gap:10px;align-items:center}
+.wind input{max-width:140px;font-family:var(--num);font-size:24px;font-weight:700}
+.banner{border-radius:12px;padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:center}
+.banner.stop{background:var(--stopBg);color:var(--stop);border:1px solid var(--stop)}
+.banner.go{background:var(--goBg);color:var(--go);border:1px solid var(--go)}
+.banner.warn{background:var(--warnBg);color:var(--warn);border:1px solid var(--warn)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.stat b{display:block;font-family:var(--num);font-size:34px;line-height:1.05}
+.stat span{font-size:13px;color:var(--mute)}
+/* crew */
+.mem{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:14px;margin-bottom:12px;border-left:6px solid var(--line)}
+.mem.ok{border-left-color:var(--go)}.mem.bad{border-left-color:var(--stop);background:var(--stopBg)}.mem.warn{border-left-color:var(--warn)}.mem.rep{opacity:.55}
+.mem .hd{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:10px;align-items:center}
+@media(max-width:600px){.mem .hd{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.mem .hd>:last-child{grid-column:1/-1}}
+.hc{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.hcb{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);text-align:left;font-size:15px;line-height:1.3}
+.hcb i{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:900;font-size:14px}
+.hcb.ok i{background:var(--go);border-color:var(--go);color:#fff}.hcb.ng{border-color:var(--stop)}.hcb.ng i{background:var(--stop);border-color:var(--stop);color:#fff}
+.fat{display:flex;gap:6px;flex-wrap:wrap}
+.fat button{min-width:44px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card2);font-family:var(--num);font-weight:700;font-size:18px}
+.fat button.on{background:var(--steel);color:#fff;border-color:var(--steel)}.fat button.on.w{background:var(--warn);border-color:var(--warn)}.fat button.on.b{background:var(--stop);border-color:var(--stop)}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.sig{height:54px;max-width:180px;background:#fff;border-radius:8px;border:1px solid var(--line)}
+/* rehearsal */
+.rail{position:relative;margin:4px 0 14px}
+.rail svg{display:block;width:100%;aspect-ratio:600/120;height:auto}
+.rail .lbl{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.rail .lbl button{border:0;background:none;padding:4px 2px;font-size:13px;line-height:1.25;font-weight:700;color:var(--mute);min-height:44px}
+.rail .lbl button.on{color:var(--ink)}
+.rail .lbl b{display:block;font-family:var(--num);font-size:16px}
+.stg{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.stg .hd{background:var(--steel);color:#fff;padding:16px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.stg .hd .n{font-family:var(--num);font-size:44px;line-height:.9;color:var(--crane)}
+.stg .hd h2{color:#fff;margin:0;font-size:26px}
+.stg .hd .who{color:#b9c9d6;font-size:14px}
+.stg .bd{padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:18px}
+@media(max-width:760px){.stg .bd{grid-template-columns:minmax(0,1fr)}}
+.hzl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hzl li{display:flex;gap:10px;align-items:flex-start;background:var(--stopBg);border-radius:10px;padding:10px 12px;font-weight:700;line-height:1.35}
+.hzl li:before{content:"";flex:none;width:0;height:0;margin-top:4px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid var(--stop)}
+.ctl{display:grid;gap:8px}
+.ctl button{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:12px;min-height:52px;line-height:1.45;font-size:16px}
+.ctl button i{flex:none;width:30px;height:30px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:900;font-family:var(--num);font-size:17px}
+.ctl button.on{border-color:var(--go);background:var(--goBg)}.ctl button.on i{background:var(--go);border-color:var(--go);color:#fff}
+details.qa{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;background:var(--card2)}
+details.qa summary{font-weight:700;cursor:pointer;min-height:32px;list-style-position:outside}
+details.qa p{margin:8px 0 2px;color:var(--go);font-weight:700}
+.stg .ft{border-top:1px solid var(--line);padding:14px 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.big{min-height:56px;font-size:18px;padding:0 22px;border-radius:14px}
+body.focus #top,body.focus #nav{display:none}body.focus .body{grid-template-columns:minmax(0,1fr)}body.focus #main{max-width:none;padding-top:calc(env(safe-area-inset-top) + 14px)}
+body.focus .stg .hd h2{font-size:34px}body.focus .ctl button{font-size:19px}body.focus .hzl li{font-size:18px}
+/* hazards */
+.site{position:relative;border-radius:var(--r);overflow:hidden;background:var(--card2);border:1px solid var(--line)}
+.site img{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+.site.mark{outline:4px solid var(--crane);cursor:crosshair}
+.pin{position:absolute;transform:translate(-50%,-100%);width:34px;height:42px;border:0;background:none;padding:0}
+.pin span{display:grid;place-items:center;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--stop);border:2px solid #fff;box-shadow:0 2px 6px #0006}
+.pin span b{transform:rotate(45deg);color:#fff;font-family:var(--num);font-size:17px}
+.pin.m span{background:var(--warn)}.pin.l span{background:#5b6a77}.pin.done span{background:var(--go)}
+.hzc{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.hzc .no{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-family:var(--num);font-weight:700;font-size:18px;background:var(--stop)}
+.hzc .no.m{background:var(--warn)}.hzc .no.l{background:#5b6a77}.hzc .no.done{background:var(--go)}
+.hzc h4{margin:0;font-size:17px}
+.thumbs{display:flex;gap:6px;margin-top:6px}.thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+@media(max-width:600px){.hzc{grid-template-columns:auto minmax(0,1fr)}.hzc>:last-child{grid-column:1/-1}}
+/* gates */
+.gate{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.gate:first-child{border-top:0}
+.gate i{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:900;color:#fff;background:var(--stop)}
+.gate.ok i{background:var(--go)}
+.gate .t{flex:1;font-weight:700}.gate .t small{display:block;font-weight:400;color:var(--mute);font-size:14px}
+.hero{border-radius:var(--r);padding:20px;color:#fff;display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.hero b{font-size:clamp(26px,4vw,38px);line-height:1.1;font-weight:900}
+.hero.go{background:var(--go)}.hero.stop{background:var(--stop)}.hero.wait{background:var(--steel)}
+.log{border-left:4px solid var(--warn);padding:8px 12px;margin:10px 0;background:var(--card2);border-radius:0 10px 10px 0}
+/* home */
+.homehead{background:var(--steel);color:#fff;padding:22px clamp(16px,4vw,40px) 26px;margin:-20px calc(-1*clamp(14px,3vw,32px)) 20px}
+.homehead h2{color:#fff;font-size:clamp(28px,4vw,40px)}
+.homehead p{color:#c6d4df;margin:4px 0 16px;max-width:62ch}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.pc{display:block;text-align:left;width:100%;border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:14px;color:inherit}
+.pc h4{margin:6px 0 2px;font-size:17px;line-height:1.3}
+.bar{height:8px;border-radius:99px;background:var(--card2);border:1px solid var(--line);overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--crane)}
+.empty{text-align:center;padding:36px 16px;color:var(--mute);border:2px dashed var(--line);border-radius:var(--r)}
+.prow{display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:none;padding:12px 4px;color:inherit}
+.prow:hover{background:var(--card2)}
+.prow .c{font-size:14px;color:var(--mute);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+/* sheet */
+.sheet{position:fixed;inset:0;background:#0009;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.sheet[hidden]{display:none}
+.sheet .box{background:var(--card);border-radius:18px;width:min(680px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
+.sheet .box h3{font-size:21px}
+canvas.pad{width:100%;height:180px;background:#fff;border-radius:12px;border:2px dashed var(--line);touch-action:none;display:block}
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#111c;color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;z-index:60;max-width:90vw;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+.focusx{position:fixed;right:max(14px,env(safe-area-inset-right));top:calc(env(safe-area-inset-top) + 12px);z-index:30;display:none}
+body.focus .focusx{display:inline-flex}body.focus [data-a=focus]{visibility:hidden}
+@media(max-width:760px){
+ .body{grid-template-columns:minmax(0,1fr)}
+ #nav{position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;z-index:25;border-right:0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+ #nav button{flex-direction:column;gap:2px;min-height:54px;padding:4px 2px;margin:0;text-align:center;position:relative}
+ #nav button .lb{font-size:12px}#nav button .lb small{display:none}
+ #nav .bdg{position:absolute;top:2px;right:4px;font-size:12px;min-width:0;padding:0 5px}
+ #main{padding-bottom:110px}
+ body.focus #main{padding-bottom:40px}
+ .sheet{align-items:flex-end;padding:0}.sheet .box{border-radius:18px 18px 0 0;max-height:92vh}
+ h2{font-size:23px}.stg .hd h2{font-size:22px}
+ #top .tb .tx{display:none}
+}
+@media (prefers-reduced-motion:no-preference){.hook{transition:transform .45s cubic-bezier(.3,1.3,.5,1)}}
+</style>
+</head>
+<body class="home">
+<header id="top"></header>
+<div class="body"><nav id="nav" aria-label="PTP 步驟"></nav><main id="main"></main></div>
+<button class="btn y focusx" data-a="unfocus">結束專注模式</button>
+<div id="sheet" class="sheet" hidden><div class="box" id="box"></div></div>
+<div id="toast" role="status"></div>
+<script>
+{
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const pad=n=>String(n).padStart(2,'0');
+const fmt=t=>{if(!t)return'';const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const ymd=()=>{const d=new Date();return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`};
+const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+const cuse=n=>(window.claude&&typeof window.claude.use==='function')?window.claude.use(n).catch(()=>null):Promise.resolve(null);
+
+/* ---------- 內容（取自 PTP 01/02/03） ---------- */
+const INFO=[
+{t:'一、基本資訊',items:[
+ {k:'date',l:'作業日期／時段',h:'例：2026/11/27 08:00–17:00'},
+ {k:'contractor',l:'承攬商／班組名稱',h:'實際進場施作之鋼構承攬商與班組編號'},
+ {k:'loc',l:'作業位置（樓層／柱位）',h:'例：FAB 3F / Grid C4–D6、柱位編號'},
+ {k:'member',l:'吊裝構件與最大規格',h:'構件類型（主柱/主樑/次樑/斜撐）、單件最大重量 (t) 與長度 (m)'},
+ {k:'wind',l:'現場實測風速 (m/s)',h:'填純數值；≥ 10 m/s 強制停工（或依原廠手冊取嚴者）',type:'wind'},
+ {k:'change',l:'當日變更點',h:'強制檢視：新進人員、吊車移位、新增障礙物、鄰近新工種進場',type:'chips',opts:['無變更','新進人員','吊車移位','新增障礙物','鄰近新工種進場','構件規格變更']}]},
+{t:'二、人員與通訊',items:[
+ {k:'foreman',l:'現場領班',h:'主持 PTP、確認全員身心狀態、緊急應變總指揮'},
+ {k:'operator',l:'吊車操作手',h:'姓名（證照與機具檢點由 CraneCheck 另行卡控）'},
+ {k:'signal',l:'專責指揮手／吊掛手',h:'明確區分指揮手與吊掛手，嚴禁無專責指揮手即起吊'},
+ {k:'traffic',l:'地面管制員／交通指揮',h:'管制區淨空，禁止非相關人員穿越吊物下方'},
+ {k:'radio',l:'專用無線電頻道與通訊方式',h:'獨立頻道 (CH__)，盲區中繼指揮方式及統一手勢/哨音'},
+ {k:'stopwork',l:'停工權宣達',h:'已向全員宣達：任一成員發現異常皆可直接喊停作業'}]},
+{t:'三、場地與混同作業',items:[
+ {k:'crane',l:'吊車架設與地質確認',h:'外伸撐座下方無地下管線/空洞/軟弱土層，墊板到位、迴轉半徑淨空'},
+ {k:'obstacle',l:'空間障礙物盤點',h:'既有鋼構、高壓電線、鷹架、管線及鄰近塔吊防碰撞交會區'},
+ {k:'simops',l:'上下層與周邊混同作業',h:'吊掛路徑正下方及緩衝區是否有其他工種，確認錯開或淨空'},
+ {k:'barrier',l:'管制區實體圍設',h:'實體圍籬、警示帶與出入口管制點已佈設完成'}]},
+{t:'四、PPE 與防墜',items:[
+ {k:'fall',l:'防墜系統與具體掛點位置',h:'雙大鉤安全帶、防墜器、水平母索/鋼樑夾具之具體掛點（高於腰部或符合淨空距離）'},
+ {k:'ppe',l:'基本個人防護具 (PPE)',h:'附下顎帶安全帽、防割/防衝擊手套、護目鏡、鋼頭防滑安全鞋'},
+ {k:'drop',l:'防高空落物裝備',h:'手工具均繫防墜繩、螺栓置於專用防漏工具袋'}]},
+{t:'五、緊急應變',items:[
+ {k:'rescue',l:'高空懸吊救援方案',h:'待命高空車/救援爬梯/緩降組停放位置，目標 10–15 分鐘內完成救援'},
+ {k:'emerg',l:'緊急聯絡專線與集合點',h:'工地應變中心專線、急救箱/擔架位置、緊急集合點與救護車動線'}]}];
+const ST=[['ok','已確認'],['pd','待確認'],['bad','異常需改善'],['na','不適用']];
+const STAGES=[
+{t:'地面卸料、堆置與翻轉',s:'卸料堆置',y:94,r:'吊掛手／領班',
+ h:['鋼構滾動傾倒','手腳遭構件夾傷','枕木壓潰變形'],
+ c:['枕木須水平對齊且無裂損腐朽','嚴禁人員站立於鋼構翻轉側或夾角處','使用撬棒或輔助工具調整位置，雙手嚴禁直接接觸受力面'],
+ q:[['枕木下方地面不平或鬆軟，怎麼處理？','停止堆置，先整平或加鋪鋼板/墊板；不可用碎料隨意塞墊。'],['構件翻轉時你要站在哪裡？','站在翻轉方向的反側、遠離夾角，用撬棒或輔助工具，手不碰受力面。']]},
+{t:'吊具掛設與試吊',s:'掛設試吊',y:78,r:'吊掛手／操作手',
+ h:['吊索滑脫或切斷','重心偏移傾斜','鋼樑瞬間擺盪掃擊'],
+ c:['確認吊點對稱與鋼樑銳角護角已安裝到位','綁固後人員退至安全距離外','離地 20–30 cm 暫停試吊，確認水平平衡與剎車制動力','雙側繫掛牽引繩 (Tag Line)，嚴禁徒手扶構件'],
+ q:[['試吊離地後發現構件傾斜？','立即放回落地，重新調整吊點或吊索長度後再試吊；不可在空中用手扶正。'],['發現少裝一個護角？','放下重裝，銳角未保護不得起吊。']]},
+{t:'起吊、迴轉與移動',s:'起吊迴轉',y:30,r:'指揮手／管制員',
+ h:['構件碰撞既有結構','風切效應導致旋轉','表面雜物高空落物'],
+ c:['起吊前徹底清除鋼樑表面雜物、螺帽、工具與積水','專責指揮手全程目視追蹤吊運路徑，避免視覺盲區','牽引繩人員站立於上風處及安全退路側，嚴禁將繩索纏繞於手腕或腰部'],
+ q:[['吊運中指揮手視線被擋住？','立即停止動作，由中繼指揮接手並以無線電確認後才繼續。'],['突然起風、構件開始旋轉？','停止迴轉、緩降至安全高度或落地，以牽引繩穩住；人員不站在吊物下方，風速 ≥ 10 m/s 停工。']]},
+{t:'高空對孔與臨時固定',s:'高空對孔',y:20,r:'高空接料工',
+ h:['高處墜落風險','手指伸入螺孔遭剪斷','未固定構件翻覆'],
+ c:['高空接料工落實 100% 雙大鉤防墜系統','嚴禁以手指探測螺孔，一律使用尖尾扳手 (Spud Wrench) 對孔','螺栓與手工具裝入防漏袋並繫防墜繩','懸臂樑或次樑依結構設計加設臨時斜撐或防傾倒固定'],
+ q:[['螺孔對不上怎麼辦？','用尖尾扳手或沖棒對孔，嚴禁手指探孔；仍不行就放下調整，不硬撬。'],['找不到合適的安全帶掛點？','不得作業，回報領班增設母索或鋼樑夾具後再上。']]},
+{t:'卸鉤與人員撤離',s:'卸鉤撤離',y:20,r:'高空接料工／指揮手',
+ h:['螺栓不足即卸鉤掉落','卸鉤時身體失衡墜落'],
+ c:['確認每端已鎖固規定數量之臨時螺栓（通常 ≥ 2 顆且鎖緊）','須經高空接料工與指揮手雙方無線電複誦確認，方可下令鬆鉤','使用長柄卸鉤器或於安全爬梯／高空作業車內進行卸鉤'],
+ q:[['只鎖一顆螺栓，有人催著卸鉤？','拒絕卸鉤，鎖足規定數量並雙方無線電複誦確認後才鬆鉤；任何人都可以喊停。']]},
+{t:'收工與場地復原',s:'收工復原',y:94,r:'領班／全員',
+ h:['夜間強風吹落未固定件','殘留料件與工具絆倒'],
+ c:['確認當日所有已吊裝構件均達過夜結構穩定標準','地面剩餘鋼構妥善墊放並加設止滑固定','回收所有零散螺栓、鐵件與工具，恢復通道暢通'],
+ q:[['收工前發現一支樑還沒鎖完？','不可留過夜未固定：回報領班，補足螺栓或加臨時斜撐後才收工。']]}];
+const HEALTH=[{k:'sleep',l:'睡眠充足（昨晚 ≥ 6 小時）'},{k:'alcohol',l:'無飲酒、無酒氣'},{k:'body',l:'無發燒、頭暈、胸悶等不適'},{k:'meds',l:'未服用會嗜睡的藥物'},{k:'mind',l:'情緒穩定、可專注作業'}];
+const FAT=['','精神很好','正常','有點累','很累','撐不住'];
+const ROLES=['領班','吊車操作手','吊掛指揮手','吊掛手','高空接料工','地面交管人員','支援人員'];
+const TRIG=['變更吊裝區域','更換操作手/指揮手','風速超標/天候突變','新增周邊SIMOPS工種','發生虛驚事件(Near Miss)','其他變更'];
+const HZQ=['高壓電線','開口/臨邊未防護','地面軟弱/不平','人員穿越吊物下方','上下層交叉作業','既有結構碰撞','視線盲區','積水/濕滑','吊具異常'];
+const LV=['消除','替代','工程控制','管理控制','PPE'];
+const SEV={h:'高',m:'中',l:'低'};
+const TABS=[['info','基本資訊','介面管制'],['crew','人員身心','簽署確認'],['run','劇本排練','六階段'],['hz','危害標記','排除追蹤'],['go','放行','動態修訂']];
+const IC={
+info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg>',
+crew:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 5.2a3 3 0 0 1 0 5.6M18 14.8c1.8.7 3 2.4 3 5.2"/></svg>',
+run:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v9"/><path d="M12 11a3.5 3.5 0 1 1-3.5 3.5"/><path d="M4 22h16"/></svg>',
+hz:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.5"/></svg>',
+go:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>'};
+
+/* ---------- 狀態與儲存 ---------- */
+const S={ptps:LS.get('ptp.v1')||{},cur:null,tab:'info',stage:0,permits:LS.get('ptp.permits')||[],pf:{q:'',steel:true,fac:'',date:''},hzf:'all',mark:false,mode:'local',ro:false,dirty:{},writing:{},again:{}};
+let DB=null,ASSETS=null,DL=null,timer=null;
+const P=()=>S.ptps[S.cur];
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600)}
+function persistLocal(){if(!LS.set('ptp.v1',S.ptps))toast('本機儲存空間已滿，照片請改用雲端模式')}
+function touch(p,now){p=p||P();if(!p)return;p.updatedAt=Date.now();S.dirty[p.id]=1;persistLocal();clearTimeout(timer);const id=p.id;timer=setTimeout(()=>push(id),now?50:700);refreshChrome()}
+async function push(id){const p=S.ptps[id];if(!DB||!p||S.ro){delete S.dirty[id];return}
+ if(S.writing[id]){S.again[id]=1;return}
+ S.writing[id]=1;delete S.again[id];
+ try{await DB.collection('ptp').doc(id).set(JSON.parse(JSON.stringify(p)))}
+ catch(e){const c=e&&e.code;if(c==='invalid_argument'){S.ro=true;toast('你目前只有檢視權限，變更僅存於本機')}else if(c==='quota_exceeded')toast('雲端容量已滿，請刪除舊 PTP');else if(c==='unavailable'){await new Promise(r=>setTimeout(r,800+Math.random()*800));S.again[id]=1}else toast('同步失敗，已保存在本機')}
+ S.writing[id]=0;if(S.again[id])push(id);else delete S.dirty[id]}
+async function initCaps(){
+ const [db,as,dl]=await Promise.all([cuse('db'),cuse('assets'),cuse('downloads')]);
+ ASSETS=as;DL=dl;
+ if(db){DB=db;let first=true;const t=setTimeout(()=>{if(first)toast('雲端資料尚未連上，先使用本機資料')},10000);
+  DB.collection('ptp').onSnapshot(snap=>{
+   if(!snap.metadata.fromCache){clearTimeout(t);S.mode='cloud'}
+   const seen={};
+   snap.docs.forEach(d=>{const v=d.data();if(!v)return;seen[d.id]=1;const loc=S.ptps[d.id];
+    if(S.dirty[d.id]||S.writing[d.id])return;
+    if(!loc||(v.updatedAt||0)>(loc.updatedAt||0))S.ptps[d.id]=JSON.parse(JSON.stringify(v))});
+   snap.docChanges().forEach(ch=>{if(ch.type==='removed'&&!S.dirty[ch.doc.id]){delete S.ptps[ch.doc.id];if(S.cur===ch.doc.id){S.cur=null}}});
+   if(first&&!snap.metadata.fromCache){first=false;Object.keys(S.ptps).forEach(id=>{if(!seen[id]){S.dirty[id]=1;push(id)}})}
+   persistLocal();
+   const a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&$('#main').contains(a)){refreshChrome();return}
+   if(!$('#sheet').hidden){refreshChrome();return}
+   render()},e=>{clearTimeout(t);toast('雲端連線中斷，資料先存本機')})}
+ render()}
+
+/* ---------- 計算 ---------- */
+const windV=p=>{const v=parseFloat(p.info.wind.v);return isNaN(v)?null:v};
+function infoStats(p){let req=0,ok=0,bad=0;INFO.forEach(s=>s.items.forEach(it=>{req++;const x=p.info[it.k]||{};if(x.st==='ok'||x.st==='na')ok++;if(x.st==='bad')bad++}));return{req,ok,bad}}
+function pst(m){if(m.st==='rep')return'rep';const hv=HEALTH.map(h=>m.h[h.k]);
+ if(hv.includes('ng'))return'bad';const bp=String(m.bp||'').split('/').map(Number);if(bp[0]>=160||bp[1]>=100)return'bad';
+ if(parseFloat(m.alc)>0)return'bad';if(m.fat>=5)return'bad';if(hv.every(v=>v==='ok')&&m.fat)return m.fat>=4?'warn':'ok';return''}
+const active=p=>p.crew.filter(m=>m.name.trim()&&m.st!=='rep');
+function crewStats(p){const a=active(p);const r={n:a.length,ok:0,bad:0,warn:0,pd:0,sig:0};a.forEach(m=>{const s=pst(m);if(s==='ok')r.ok++;else if(s==='warn'){r.warn++;r.ok++}else if(s==='bad')r.bad++;else r.pd++;if(m.sig)r.sig++});return r}
+function gates(p){const i=infoStats(p),w=windV(p),c=crewStats(p),a=active(p);
+ const key=['領班','吊車操作手','吊掛指揮手'].filter(r=>!a.some(m=>m.role===r));
+ const vs=p.stages.filter(s=>s.st==='V').length;const hh=p.hz.filter(h=>h.sev==='h'&&h.status!=='done').length;
+ return[
+ {ok:i.ok===i.req,t:'必檢項全部確認',d:`${i.ok}/${i.req} 項完成${i.bad?`，${i.bad} 項異常需改善`:''}`,tab:'info'},
+ {ok:w!==null&&w<10,t:'風速低於停工紅線',d:w===null?'尚未輸入現場實測風速':`${w} m/s ${w>=10?'— 達 ≥10 m/s 強制停工':''}`,tab:'info'},
+ {ok:(p.info.stopwork||{}).st==='ok',t:'停工權已宣達',d:'任一成員發現異常皆可直接喊停',tab:'info'},
+ {ok:!key.length,t:'關鍵角色到位',d:key.length?'缺：'+key.join('、'):'領班、操作手、指揮手皆已登錄',tab:'crew'},
+ {ok:c.n>0&&c.bad===0&&c.pd===0,t:'全員身心狀態正常',d:c.n?`${c.ok}/${c.n} 正常${c.bad?`，${c.bad} 人異常須替換`:''}${c.pd?`，${c.pd} 人未檢核`:''}`:'尚未登錄人員',tab:'crew'},
+ {ok:c.n>0&&c.sig===c.n,t:'全員親自簽署',d:`${c.sig}/${c.n} 已簽`,tab:'crew'},
+ {ok:vs===6,t:'六階段劇本皆已落實 (V)',d:`${vs}/6 階段${p.stages.some(s=>s.st==='X')?'，有階段未達標':''}`,tab:'run'},
+ {ok:hh===0,t:'高風險危害已全數排除',d:hh?`${hh} 項高風險未排除`:`共標記 ${p.hz.length} 項，${p.hz.filter(h=>h.status!=='done').length} 項中低風險追蹤中`,tab:'hz'}]}
+function status(p){const g=gates(p),ok=g.every(x=>x.ok),n=g.filter(x=>x.ok).length;
+ if(p.rel.state==='go')return ok?{k:'go',l:'已放行',c:'c-go'}:{k:'chg',l:'放行後條件變動',c:'c-warn'};
+ if(p.rel.state==='pause')return{k:'pause',l:'暫停・重新評估',c:'c-stop'};
+ if(windV(p)>=10)return{k:'wind',l:'風速停工',c:'c-stop'};
+ return ok?{k:'ready',l:'可放行',c:'c-y'}:{k:'prep',l:`準備中 ${n}/${g.length}`,c:'c-mute',pct:n/g.length}}
+const pTitle=p=>p.info.loc.v||(p.permit&&p.permit.area.split('\n')[0])||'未命名吊裝作業';
+
+/* ---------- CSV 許可單 ---------- */
+function parseCSV(t){t=t.replace(/^﻿/,'');const rows=[];let row=[],f='',q=false;
+ for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+  else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}else if(c!=='\r')f+=c}
+ if(f||row.length){row.push(f);rows.push(row)}return rows}
+function toPermit(o){const c=(o['施工內容']||'').replace(/\r\n?/g,'\n'),kv={};
+ c.split('\n').forEach(l=>{const m=l.match(/^\s*([^:：]{1,14})[:：]\s*(.*)$/);if(m)kv[m[1].trim()]=m[2].trim()});
+ const pick=(...ks)=>{for(const k of ks)if(kv[k])return kv[k];return''};
+ const names=s=>s?s.split(/[、,，\/\s]+/).filter(x=>x&&x.length<=4&&/[一-鿿]/.test(x)):[];
+ const carSrc=pick('車號','車牌','車牌號碼','吊車車號','吊車車牌','吊車編號','吊車','v車號')||c;
+ const car=(carSrc.match(/[A-Z]{1,3}-\d{2,4}/i)||[''])[0];
+ const wt=(pick('預計吊掛物最大重量')||'').match(/(\d+(?:\.\d+)?)\s*(T|t|噸)/);
+ return{fac:o['廠別']||'',no:o['單號']||'',main:o['主承商']||'',sub:o['次承商']||'',area:o['施工區域']||'',content:c,start:o['施工開始日期']||'',end:o['施工結束日期']||'',risk:o['風險判定']||'',detail:o['作業細項']||'',state:o['施工狀態']||'',safety:o['工安']||'',safetyTel:o['工安電話']||'',sup:o['監工']||'',supTel:o['監工電話']||'',car,items:pick('吊掛物','吊掛物料','吊掛內容物','吊移吊運物料','吊掛種類'),wt:wt?wt[1]+' t':'',ops:names(pick('吊車操作手','司機')),sig:names(pick('指揮吊掛手')),company:pick('吊車公司','吊車廠商','廠商'),steel:/鋼構|鋼柱|鋼樑|鋼梁|鋼梯|鋼骨/.test(c)}}
+function importCSV(text){const rows=parseCSV(text);if(rows.length<2){toast('檔案內容讀不到資料');return}
+ const hd=rows[0].map(h=>h.trim());if(!hd.includes('作業類別')||!hd.includes('施工內容')){toast('欄位格式不符（需含「作業類別」「施工內容」）');return}
+ const list=rows.slice(1).filter(r=>r.length>=hd.length-2).map(r=>Object.fromEntries(hd.map((h,i)=>[h,r[i]||'']))).filter(o=>/吊掛/.test(o['作業類別'])&&o['施工狀態']!=='施工取消').map(toPermit);
+ S.permits=list;if(!LS.set('ptp.permits',list))toast('許可單只保留在本次開啟期間');
+ toast(`已匯入 ${list.length} 筆吊掛作業許可單`);permitSheet()}
+
+/* ---------- 建立 PTP ---------- */
+function newPTP(pm){const p={id:uid(),createdAt:Date.now(),updatedAt:Date.now(),permit:pm||null,info:{},crew:[],stages:STAGES.map(()=>({chk:[],st:'',note:'',who:[]})),hz:[],site:'',revs:[],rel:{state:'',at:0,by:'',sig:''}};
+ INFO.forEach(s=>s.items.forEach(it=>p.info[it.k]={v:'',st:''}));
+ p.info.date.v=ymd()+' 08:00–17:00';
+ if(pm){p.info.contractor.v=[pm.main,pm.sub].filter((x,i,a)=>x&&a.indexOf(x)===i).join(' / ');p.info.loc.v=pm.area.split('\n')[0].replace(/\.$/,'');
+  p.info.member.v=[pm.items,pm.wt&&('預計最大 '+pm.wt)].filter(Boolean).join('，');p.info.operator.v=pm.ops.join('、');p.info.signal.v=pm.sig.join('、');
+  if(pm.start)p.info.date.v=pm.start.replace(/-/g,'/')+' 08:00–17:00'}
+ p.crew=['領班','吊車操作手','吊掛指揮手','吊掛手','吊掛手','高空接料工','高空接料工','地面交管人員'].map(r=>mem(r));
+ if(pm){if(pm.ops[0])p.crew[1].name=pm.ops[0];if(pm.sig[0])p.crew[2].name=pm.sig[0]}
+ S.ptps[p.id]=p;S.cur=p.id;S.tab='info';S.stage=0;closeSheet();touch(p,true);render();window.scrollTo(0,0)}
+const mem=r=>({id:uid(),role:r,name:'',isNew:false,h:{},fat:0,bp:'',alc:'',sig:'',sigAt:0,st:'',rep:''});
+
+/* ---------- 版面 ---------- */
+function refreshChrome(){renderTop();renderNav()}
+function render(){document.body.classList.toggle('home',!P());if(!P())S.cur=null;refreshChrome();
+ const m=$('#main'),y=window.scrollY;
+ m.innerHTML=!P()?vHome():({info:vInfo,crew:vCrew,run:vRun,hz:vHz,go:vGo}[S.tab])(P());
+ window.scrollTo(0,y)}
+function renderTop(){const p=P(),sync=S.mode==='cloud'?'<span class="chip c-mute">雲端同步</span>':'<span class="chip c-mute">本機</span>';
+ if(!p){$('#top').innerHTML=`<div class="ttl"><h1>鋼構吊裝 PTP</h1><div class="sub">作業前危害辨識・吊裝劇本排練</div></div>${sync}`;return}
+ const s=status(p),w=windV(p);
+ $('#top').innerHTML=`<button class="tb" data-a="home" aria-label="回清單">‹<span class="tx"> 清單</span></button>
+ <div class="ttl"><h1>${esc(pTitle(p))}</h1><div class="sub">${esc([p.permit&&('單號 '+p.permit.no),p.info.contractor.v,p.info.date.v].filter(Boolean).join('・'))}</div></div>
+ <span class="chip ${w===null?'c-mute':w>=10?'c-stop':'c-go'}"><span class="num">${w===null?'—':w}</span> m/s</span>
+ <span class="chip ${s.c}">${esc(s.l)}</span>`}
+function renderNav(){const p=P();if(!p){$('#nav').innerHTML='';return}
+ const i=infoStats(p),c=crewStats(p),v=p.stages.filter(s=>s.st==='V').length,o=p.hz.filter(h=>h.status!=='done').length,g=gates(p),gn=g.filter(x=>x.ok).length;
+ const b={info:[`${i.ok}/${i.req}`,i.ok===i.req?'ok':i.bad?'bad':''],crew:[`${c.sig}/${c.n}`,c.bad?'bad':c.n&&c.sig===c.n&&!c.pd?'ok':''],run:[`${v}/6`,p.stages.some(s=>s.st==='X')?'bad':v===6?'ok':''],hz:[String(o),p.hz.some(h=>h.sev==='h'&&h.status!=='done')?'bad':p.hz.length&&!o?'ok':''],go:[`${gn}/${g.length}`,p.rel.state==='go'&&gn===g.length?'ok':p.rel.state==='pause'?'bad':'']};
+ $('#nav').innerHTML=TABS.map(([k,l,sm])=>`<button class="${S.tab===k?'on':''}" data-a="tab" data-v="${k}">${IC[k]}<span class="lb">${l}<small>${sm}</small></span><span class="bdg ${b[k][1]}">${b[k][0]}</span></button>`).join('')}
+
+/* 首頁 */
+function vHome(){const L=Object.values(S.ptps).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+ return`<div class="homehead"><h2>吊裝前，先把劇本走一遍</h2><p>領班帶班組逐階段排練鋼構吊裝：確認人員身心、標記現場危害並追蹤排除，全部到位才放行。機具與一機三證請併同 CraneCheck 高風險檢點。</p>
+ <div class="row"><button class="btn y big" data-a="permits">從作業許可單建立</button><button class="btn big" data-a="blank" style="background:#ffffff14;color:#fff;border-color:#ffffff44">空白 PTP</button></div></div>
+ <div class="sec-t"><h3>PTP 紀錄</h3><span class="ln"></span><span class="hint">${L.length} 份</span></div>
+ ${L.length?`<div class="plist">${L.map(p=>{const s=status(p),o=p.hz.filter(h=>h.status!=='done').length,g=gates(p),pct=Math.round(g.filter(x=>x.ok).length/g.length*100);
+  return`<button class="pc" data-a="open" data-v="${esc(p.id)}"><div class="chips"><span class="chip ${s.c==='c-mute'?'c-line':s.c}">${esc(s.l)}</span>${o?`<span class="chip c-line">危害追蹤 ${o}</span>`:''}</div>
+  <h4>${esc(pTitle(p))}</h4><div class="hint">${esc([p.info.date.v,p.info.contractor.v].filter(Boolean).join('・'))}</div><div class="hint">${esc(p.info.member.v)}</div><div class="bar"><i style="width:${pct}%"></i></div></button>`}).join('')}</div>`
+ :`<div class="empty"><b>還沒有 PTP</b><br>匯入當日作業許可單 CSV，選一筆吊掛作業即可帶入承攬商、區域、操作手與指揮手。</div>`}`}
+
+/* 01 基本資訊 */
+function vInfo(p){const i=infoStats(p),w=windV(p),pm=p.permit;
+ let h=`<h2>基本資訊與介面管制</h2><p class="lead">開工前 10–15 分鐘由領班主持，聚焦當日變動條件、人員通訊、混同作業介面、PPE 與高空救援配置。</p>
+ <div class="stats"><div class="stat"><b>${Math.round(i.ok/i.req*100)}%</b><span>必檢項完成率 (${i.ok}/${i.req})</span></div>
+ <div class="stat"><b style="color:${w===null?'inherit':w>=10?'var(--stop)':'var(--go)'}">${w===null?'—':w}</b><span>風速 m/s・紅線 10</span></div>
+ <div class="stat"><b style="color:${i.bad?'var(--stop)':'inherit'}">${i.bad}</b><span>異常需改善</span></div></div>`;
+ if(w!==null&&w>=10)h+=`<div class="banner stop" style="margin-bottom:14px">⚠ 達強制停工紅線 (≥ 10 m/s)：禁止起吊，待風速回落並重新量測</div>`;
+ if(pm)h+=`<details class="card"><summary><b>作業許可單 ${esc(pm.no)}</b>・${esc(pm.fac)}・${esc(pm.detail)}${pm.car?'・'+esc(pm.car):''}</summary>
+  <div class="mini" style="margin-top:10px"><div><div class="hint">施工區域</div><div style="white-space:pre-line">${esc(pm.area)}</div></div><div><div class="hint">施工內容</div><div style="white-space:pre-line">${esc(pm.content)}</div></div>
+  <div><div class="hint">工安</div>${esc(pm.safety)} <span class="num">${esc(pm.safetyTel)}</span></div><div><div class="hint">監工</div>${esc(pm.sup)} <span class="num">${esc(pm.supTel)}</span></div></div></details>`;
+ INFO.forEach(sec=>{h+=`<div class="sec-t"><h3>${sec.t}</h3><span class="ln"></span></div><div class="card" style="padding-top:2px;padding-bottom:2px">`;
+  sec.items.forEach(it=>{const x=p.info[it.k];let inp;
+   if(it.type==='wind')inp=`<div class="wind"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(x.v)}" data-f="info.${it.k}.v" data-r="1" placeholder="0.0" aria-label="風速"><span class="hint">m/s</span></div>`;
+   else if(it.type==='chips'){const sel=x.v?x.v.split('、'):[];inp=`<div class="chips">${it.opts.map(o=>`<button class="tg ${sel.includes(o)?'on':''}" data-a="chg" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`}
+   else inp=`<textarea rows="2" data-f="info.${it.k}.v" placeholder="填寫內容／補充說明" aria-label="${esc(it.l)}">${esc(x.v)}</textarea>`;
+   const seg=it.type==='wind'?`<span class="chip ${w===null?'c-line':w>=10?'c-stop':'c-go'}">${w===null?'待輸入':w>=10?'強制停工':'風速正常'}</span>`:
+    `<div class="seg" role="group">${ST.map(([k,l])=>`<button class="${(x.st||'pd')===k?'on '+k:''}" data-a="st" data-k="${it.k}" data-v="${k}">${l}</button>`).join('')}</div>`;
+   h+=`<div class="it ${x.st==='bad'?'bad':''}"><div class="nm">${esc(it.l)}<div class="hint">${esc(it.h)}</div></div><div>${inp}</div>${seg}</div>`});
+  h+='</div>'});
+ return h+`<div class="row" style="margin-top:8px"><span class="sp"></span><button class="btn pri big" data-a="tab" data-v="crew">下一步：人員身心 ›</button></div>`}
+
+/* 03-A 人員 */
+function vCrew(p){const c=crewStats(p),names=crewNames(p);
+ let h=`<h2>人員身心狀態與簽署</h2><p class="lead">領班逐一詢問並確認每位成員，異常者當場替換或調離吊掛作業。簽名代表本人已理解今日作業步驟、危害對策、停工權與緊急撤離動線。</p>
+ <div class="stats"><div class="stat"><b>${c.n}</b><span>出勤人數</span></div><div class="stat"><b style="color:var(--go)">${c.ok}</b><span>狀態正常${c.warn?`（${c.warn} 人疲勞注意）`:''}</span></div>
+ <div class="stat"><b style="color:${c.bad?'var(--stop)':'inherit'}">${c.bad}</b><span>身心異常</span></div><div class="stat"><b>${c.sig}/${c.n}</b><span>已簽署</span></div></div>
+ ${c.bad?`<div class="banner stop" style="margin-bottom:14px">⚠ 有身心異常人員，須立即替換或停工</div>`:c.n&&!c.pd?`<div class="banner go" style="margin-bottom:14px">✓ 全員狀態檢核無異常</div>`:''}`;
+ p.crew.forEach((m,ix)=>{const s=pst(m);
+  h+=`<div class="mem ${s}"><div class="hd"><select data-f="crew.${ix}.role" aria-label="角色">${ROLES.map(r=>`<option ${m.role===r?'selected':''}>${r}</option>`).join('')}</select>
+  <input type="text" value="${esc(m.name)}" data-f="crew.${ix}.name" placeholder="姓名" list="nl" aria-label="姓名">
+  <div class="row">${s==='rep'?`<span class="chip c-line">已替換${m.rep?'為 '+esc(m.rep):''}</span>`:s==='bad'?'<span class="chip c-stop">異常・禁止作業</span>':s==='warn'?'<span class="chip c-warn">疲勞注意</span>':s==='ok'?'<span class="chip c-go">正常可作業</span>':'<span class="chip c-line">未檢核</span>'}
+  <button class="tg ${m.isNew?'on':''}" data-a="isnew" data-i="${ix}">新進</button><button class="btn sm" data-a="rmm" data-i="${ix}" aria-label="移除">移除</button></div></div>`;
+  if(s!=='rep'){h+=`<div class="hc">${HEALTH.map(x=>{const v=m.h[x.k]||'';return`<button class="hcb ${v}" data-a="hc" data-i="${ix}" data-k="${x.k}"><i>${v==='ok'?'✓':v==='ng'?'✕':''}</i>${x.l}</button>`}).join('')}</div>
+  <div class="mini"><div style="grid-column:1/-1"><div class="hint">精神狀態（1 很好 → 5 撐不住）</div><div class="fat">${[1,2,3,4,5].map(n=>`<button class="${m.fat===n?'on '+(n>=5?'b':n>=4?'w':''):''}" data-a="fat" data-i="${ix}" data-v="${n}" title="${FAT[n]}">${n}</button>`).join('')}</div></div>
+  <div><div class="hint">血壓（選填，如 128/82）</div><input type="text" inputmode="numeric" value="${esc(m.bp)}" data-f="crew.${ix}.bp" data-r="1" placeholder="收縮/舒張"></div>
+  <div><div class="hint">酒測值 mg/L（選填）</div><input type="number" inputmode="decimal" step="0.01" min="0" value="${esc(m.alc)}" data-f="crew.${ix}.alc" data-r="1" placeholder="0.00"></div></div>
+  ${s==='bad'?`<div class="row"><button class="btn red" data-a="rep" data-i="${ix}">替換此人員</button><span class="hint">血壓 ≥160/100、酒測 >0、精神 5 或任一項 ✕ 即判定異常（紅線請依廠區規定）</span></div>`:''}
+  <div class="row">${m.sig?`<img class="sig" src="${esc(m.sig)}" alt="簽名"><span class="hint">${fmt(m.sigAt)} 簽署</span><button class="btn sm" data-a="sign" data-i="${ix}">重簽</button>`:`<button class="btn ${s==='ok'||s==='warn'?'pri':''}" data-a="sign" data-i="${ix}" ${s==='ok'||s==='warn'?'':'disabled'}>親自簽名</button><span class="hint">${s==='ok'||s==='warn'?'':'完成身心檢核後才能簽名'}</span>`}</div>`}
+  h+='</div>'});
+ return h+`<datalist id="nl">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+ <div class="row"><button class="btn" data-a="addm">＋ 新增人員</button><span class="sp"></span><button class="btn pri big" data-a="tab" data-v="run">下一步：劇本排練 ›</button></div>`}
+function crewNames(p){const s=new Set();p.crew.forEach(m=>m.name&&s.add(m.name.trim()));if(p.permit){p.permit.ops.forEach(n=>s.add(n));p.permit.sig.forEach(n=>s.add(n))}return[...s].filter(Boolean)}
+
+/* 02 劇本排練 */
+function rail(p,cur){const xs=STAGES.map((_,i)=>50+i*100),ys=STAGES.map(s=>s.y);
+ const path='M'+xs.map((x,i)=>`${x} ${ys[i]}`).join(' L');
+ const col=s=>s.st==='V'?'var(--go)':s.st==='X'?'var(--stop)':'var(--card)';
+ return`<div class="rail"><svg viewBox="0 0 600 120" role="img" aria-label="吊裝路徑與六階段進度">
+ <rect x="0" y="104" width="600" height="16" fill="var(--line)"/><path d="M0 104H600" stroke="var(--mute)" stroke-width="2"/>
+ ${[150,550].map(x=>`<path d="M${x-30} 104 V58 h60 V104" fill="none" stroke="var(--line)" stroke-width="6"/>`).join('')}
+ <path d="${path}" fill="none" stroke="var(--crane)" stroke-width="4" stroke-dasharray="2 9" stroke-linecap="round" stroke-linejoin="round"/>
+ ${xs.map((x,i)=>`<circle cx="${x}" cy="${ys[i]}" r="${i===cur?11:8}" fill="${col(p.stages[i])}" stroke="${i===cur?'var(--crane)':'var(--mute)'}" stroke-width="${i===cur?4:2}"/>`).join('')}
+ <g class="hook" style="transform:translate(${xs[cur]}px,0)"><path d="M0 0V${ys[cur]-24}" stroke="var(--ink)" stroke-width="2"/><rect x="-7" y="${ys[cur]-26}" width="14" height="8" rx="2" fill="var(--crane)"/><path d="M0 ${ys[cur]-18}v5a5 5 0 1 1-5 5" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/></g>
+ </svg><div class="lbl">${STAGES.map((s,i)=>`<button class="${i===cur?'on':''}" data-a="stage" data-v="${i}"><b style="color:${p.stages[i].st==='V'?'var(--go)':p.stages[i].st==='X'?'var(--stop)':'inherit'}">${i+1}${p.stages[i].st?' '+p.stages[i].st:''}</b>${s.s}</button>`).join('')}</div></div>`}
+function vRun(p){const i=S.stage,st=STAGES[i],x=p.stages[i],names=active(p).map(m=>m.name.trim()),n=x.chk.filter(Boolean).length,hz=p.hz.filter(h=>h.stage!==''&&h.stage!=null&&+h.stage===i);
+ return`<div class="row" style="margin-bottom:6px"><div class="sp"><h2>吊裝劇本排練</h2><p class="lead" style="margin:0">領班逐條唸出對策、班組回覆確認；提問情境讓每個人說出自己的應對。</p></div>
+ <button class="btn y" data-a="focus">專注模式</button></div>
+ ${rail(p,i)}
+ <div class="stg"><div class="hd"><span class="n">${i+1}</span><div class="sp"><h2>${st.t}</h2><div class="who">負責角色：${st.r}</div></div>
+ ${x.st==='V'?'<span class="chip c-go">V 已落實</span>':x.st==='X'?'<span class="chip c-stop">X 未達標・暫停</span>':'<span class="chip c-mute">待確認</span>'}</div>
+ <div class="bd"><div><h3>潛在危害</h3><ul class="hzl">${st.h.map(t=>`<li>${t}</li>`).join('')}</ul>
+  <h3 style="margin-top:16px">情境提問</h3>${st.q.map(([q,a])=>`<details class="qa"><summary>${q}</summary><p>${a}</p></details>`).join('')}
+  <h3 style="margin-top:16px">本階段負責人</h3><div class="chips">${names.length?names.map(nm=>`<button class="tg ${x.who.includes(nm)?'on':''}" data-a="who" data-v="${esc(nm)}">${esc(nm)}</button>`).join(''):'<span class="hint">先到「人員身心」登錄姓名</span>'}</div></div>
+ <div><div class="row"><h3 class="sp" style="margin:0">控制對策</h3><span class="hint">已確認 <span class="num">${n}/${st.c.length}</span></span></div>
+  <div class="ctl" style="margin-top:8px">${st.c.map((c,k)=>`<button class="${x.chk[k]?'on':''}" data-a="chk" data-v="${k}"><i>${x.chk[k]?'✓':k+1}</i><span>${c}</span></button>`).join('')}</div>
+  <label class="f">當日補充對策／備註</label><textarea data-f="stages.${i}.note" placeholder="今天現場特有的狀況與對策">${esc(x.note)}</textarea>
+  <div class="row" style="margin-top:12px"><h3 class="sp" style="margin:0">本階段現場危害</h3><button class="btn sm y" data-a="hznew" data-v="${i}">＋ 標記危害</button></div>
+  ${hz.length?hz.map(hzCard).join(''):'<p class="hint">尚未標記。排練時大家看到的現場問題，直接拍照標記並指派排除。</p>'}</div></div>
+ <div class="ft"><button class="btn big" data-a="stage" data-v="${Math.max(0,i-1)}" ${i?'':'disabled'}>‹ 上一階段</button><span class="sp"></span>
+ <button class="btn red big" data-a="sx" data-v="X">X 未達標</button><button class="btn grn big" data-a="sx" data-v="V">V 已落實</button>
+ ${i<5?`<button class="btn pri big" data-a="stage" data-v="${i+1}">下一階段 ›</button>`:`<button class="btn pri big" data-a="tab" data-v="hz">危害總表 ›</button>`}</div></div>
+ <p class="hint" style="margin-top:12px">本表聚焦動態作業步驟與人因/介面控制；吊車一機三證、鋼索斷股數、卸克規格、吊索夾角等物理防呆項目，請併同 CraneCheck 高風險吊掛檢點表執行放行。</p>`}
+
+/* 危害 */
+function hzNo(p,h){return p.hz.indexOf(h)+1}
+function hzCard(h){const p=P(),n=hzNo(p,h),cl=h.status==='done'?'done':h.sev;
+ return`<div class="hzc"><span class="no ${cl}">${n}</span><div><h4>${esc(h.title||'未命名危害')}</h4>
+ <div class="chips" style="margin:4px 0"><span class="chip ${h.sev==='h'?'c-stop':h.sev==='m'?'c-warn':'c-line'}">${SEV[h.sev]}風險</span><span class="chip c-line">${h.stage===''||h.stage==null?'整體環境':esc(STAGES[+h.stage].s)}</span>${h.status==='done'?`<span class="chip c-go">已排除 ${fmt(h.closedAt)}</span>`:'<span class="chip c-line">未排除</span>'}</div>
+ <div class="hint">${esc([h.where,h.lv&&('對策：'+h.lv),h.owner&&('負責：'+h.owner)].filter(Boolean).join('・'))}</div>${h.measure?`<div style="margin-top:4px">${esc(h.measure)}</div>`:''}
+ ${h.ph||h.ph2?`<div class="thumbs">${h.ph?`<img src="${esc(h.ph)}" alt="排除前">`:''}${h.ph2?`<img src="${esc(h.ph2)}" alt="排除後">`:''}</div>`:''}</div>
+ <button class="btn sm" data-a="hzedit" data-v="${esc(h.id)}">${h.status==='done'?'檢視':'處理'}</button></div>`}
+function vHz(p){const open=p.hz.filter(h=>h.status!=='done'),L=p.hz.filter(h=>S.hzf==='all'||(S.hzf==='open'?h.status!=='done':h.status==='done'));
+ return`<h2>現場危害標記與排除</h2><p class="lead">拍下作業區現況，在照片上點出危害位置；每一項都要有對策、負責人，排除後拍照結案。</p>
+ <div class="stats"><div class="stat"><b>${p.hz.length}</b><span>已標記</span></div><div class="stat"><b style="color:${open.some(h=>h.sev==='h')?'var(--stop)':'inherit'}">${open.filter(h=>h.sev==='h').length}</b><span>高風險未排除</span></div><div class="stat"><b>${open.length}</b><span>追蹤中</span></div><div class="stat"><b style="color:var(--go)">${p.hz.length-open.length}</b><span>已排除</span></div></div>
+ <div class="card"><div class="row" style="margin-bottom:10px"><h3 class="sp" style="margin:0">作業區平面／現況照片</h3>
+ <label class="btn sm">${p.site?'更換照片':'上傳照片'}<input type="file" accept="image/*" hidden data-up="site"></label>
+ ${p.site?`<button class="btn sm ${S.mark?'y':''}" data-a="mark">${S.mark?'點照片位置以標記…':'在照片上標記'}</button>`:''}</div>
+ ${p.site?`<div class="site ${S.mark?'mark':''}" id="site"><img src="${esc(p.site)}" alt="作業區" draggable="false">${p.hz.map(h=>h.pin?`<button class="pin ${h.status==='done'?'done':h.sev}" style="left:${h.pin.x}%;top:${h.pin.y}%" data-a="hzedit" data-v="${esc(h.id)}" aria-label="危害 ${hzNo(p,h)}"><span><b>${hzNo(p,h)}</b></span></button>`:'').join('')}</div>`
+ :`<div class="empty">上傳吊車位置與吊運路徑的現況照片或平面圖，就能直接在圖上點出危害。</div>`}</div>
+ <div class="row" style="margin:6px 0 12px"><div class="seg">${[['all','全部'],['open','未排除'],['done','已排除']].map(([k,l])=>`<button class="${S.hzf===k?'on':''}" data-a="hzf" data-v="${k}">${l}</button>`).join('')}</div><span class="sp"></span><button class="btn y" data-a="hznew" data-v="">＋ 標記危害</button></div>
+ ${L.length?L.map(hzCard).join(''):'<div class="empty">沒有符合的危害項目</div>'}`}
+
+/* 放行與動態修訂 */
+function vGo(p){const g=gates(p),ok=g.every(x=>x.ok),s=status(p),rel=p.rel;
+ const hero=rel.state==='go'?(ok?`<div class="hero go"><b>已放行・可開始吊裝</b><span>${esc(rel.by)}・${fmt(rel.at)}</span></div>`:`<div class="hero stop"><b>放行後條件變動</b><span>請暫停並記錄動態修訂</span></div>`)
+  :rel.state==='pause'?`<div class="hero stop"><b>暫停中・重新評估</b><span>完成修訂對策並全項通過後重新放行</span></div>`
+  :ok?`<div class="hero go"><b>條件全數通過</b><span>由領班簽名放行</span></div>`:`<div class="hero wait"><b>尚未達放行條件</b><span class="num" style="font-size:22px">${g.filter(x=>x.ok).length}/${g.length}</span></div>`;
+ const can=DL!==null;
+ return`<h2>放行與動態修訂</h2><p class="lead">全部條件通過才放行。作業中只要條件變更，任何人喊停，領班立即暫停並記錄重新評估。</p>${hero}
+ <div class="card">${g.map(x=>`<div class="gate ${x.ok?'ok':''}"><i>${x.ok?'✓':'✕'}</i><div class="t">${x.t}<small>${esc(x.d)}</small></div>${x.ok?'':`<button class="btn sm" data-a="tab" data-v="${x.tab}">前往</button>`}</div>`).join('')}</div>
+ <div class="row" style="margin-bottom:6px">${rel.state==='go'&&ok?`<button class="btn red big" data-a="rev">⚠ 條件變更・暫停並重新評估</button>`:`<button class="btn grn big" data-a="release" ${ok?'':'disabled'}>${rel.state?'重新放行（領班簽名）':'領班簽名放行'}</button>${rel.state==='go'?'<button class="btn red big" data-a="rev">記錄動態修訂</button>':''}`}</div>
+ <div class="sec-t"><h3>動態修訂紀錄</h3><span class="ln"></span><button class="btn sm" data-a="rev">＋ 新增</button></div>
+ <p class="hint">強制重新評估：中途變更吊裝區域／更換操作手或指揮手／風速 ≥ 10 m/s／周邊新增混同作業工種／下大雨。</p>
+ ${p.revs.length?p.revs.map((r,k)=>`<div class="log"><div class="row"><b>第 ${k+1} 次・${fmt(r.at)}</b><span class="sp"></span>${r.sig?`<img class="sig" style="height:40px" src="${esc(r.sig)}" alt="領班簽名">`:''}</div>
+  <div class="chips" style="margin:4px 0">${r.why.map(w=>`<span class="chip c-warn">${esc(w)}</span>`).join('')}</div><div>${esc(r.measure)}</div><div class="hint">領班 ${esc(r.by)}${r.rv?`・業主/安衛複查 ${esc(r.rv)}`:''}</div></div>`).join(''):'<p class="hint">尚無修訂。</p>'}
+ <div class="sec-t"><h3>匯出與分享</h3><span class="ln"></span></div>
+ <div class="row"><button class="btn pri" data-a="dlrep" ${can?'':'disabled'}>下載 PTP 報告 (HTML)</button><button class="btn" data-a="dlcsv" ${can?'':'disabled'}>下載危害清單 (CSV)</button><button class="btn" data-a="copy">複製摘要文字</button></div>
+ <p class="hint">${can?'報告可在 Safari 開啟後列印或存成 PDF。':'此檢視不支援下載，可先複製摘要文字。'}</p>
+ <div class="sec-t"><h3>管理</h3><span class="ln"></span></div><button class="btn" data-a="del">刪除此 PTP</button>`}
+
+/* ---------- Sheets ---------- */
+function openSheet(html){$('#box').innerHTML=html;$('#sheet').hidden=false;document.body.style.overflow='hidden'}
+function closeSheet(){$('#sheet').hidden=true;$('#box').innerHTML='';document.body.style.overflow='';S.draft=null}
+function permitSheet(){const f=S.pf,all=S.permits;const facs=[...new Set(all.map(x=>x.fac))].sort(),dates=[...new Set(all.map(x=>x.start))].sort();
+ const L=all.filter(x=>(!f.steel||x.steel)&&(!f.fac||x.fac===f.fac)&&(!f.date||x.start===f.date)&&(!f.q||[x.no,x.main,x.sub,x.area,x.content].join(' ').toLowerCase().includes(f.q.toLowerCase())));
+ openSheet(`<div class="row"><h3 class="sp" style="margin:0">選擇吊掛作業許可單</h3><button class="btn sm" data-a="close">關閉</button></div>
+ <p class="hint">匯入「作業許可單」匯出的 CSV（欄位：廠別、作業類別、主承商…施工內容）。只保留吊掛作業，資料僅存在此裝置。</p>
+ <div class="row"><label class="btn y">匯入 CSV<input type="file" accept=".csv,text/csv" hidden data-up="csv"></label><span class="hint">${all.length?`目前 ${all.length} 筆`:'尚未匯入'}</span></div>
+ ${all.length?`<div class="mini" style="margin-top:12px"><input type="search" placeholder="搜尋單號、承攬商、區域" value="${esc(f.q)}" data-pf="q">
+ <select data-pf="fac"><option value="">全部廠別</option>${facs.map(x=>`<option ${f.fac===x?'selected':''}>${esc(x)}</option>`).join('')}</select>
+ <select data-pf="date"><option value="">全部日期</option>${dates.map(x=>`<option ${f.date===x?'selected':''}>${esc(x)}</option>`).join('')}</select>
+ <button class="tg ${f.steel?'on':''}" data-a="pfsteel">只看鋼構相關</button></div>
+ <div style="margin-top:10px">${L.slice(0,120).map(x=>`<button class="prow" data-a="pick" data-v="${esc(x.no)}"><div class="row"><b class="num">${esc(x.no)}</b><span class="chip c-line">${esc(x.fac)}</span><span class="chip c-line">${esc(x.start)}</span>${x.steel?'<span class="chip c-y">鋼構</span>':''}${x.state==='施工完成'?'<span class="chip c-line">已完成</span>':''}</div>
+ <div>${esc(x.main)}${x.sub&&x.sub!==x.main?' / '+esc(x.sub):''}・${esc(x.area.split('\n')[0])}</div><div class="c">${esc(x.content)}</div></button>`).join('')||'<p class="hint">沒有符合的許可單</p>'}${L.length>120?`<p class="hint">僅顯示前 120 筆，請用搜尋縮小範圍</p>`:''}</div>`:''}`)}
+function hzSheet(h){S.draft=h;const p=P(),names=crewNames(p);const isNew=!p.hz.includes(h);
+ openSheet(`<div class="row"><h3 class="sp" style="margin:0">${isNew?'標記現場危害':'危害 #'+hzNo(p,h)}</h3><button class="btn sm" data-a="close">取消</button></div>
+ <label class="f">危害描述</label><input type="text" data-d="title" value="${esc(h.title)}" placeholder="例：吊運路徑上方有高壓電線">
+ <div class="chips" style="margin-top:8px">${HZQ.map(q=>`<button class="tg" data-a="hzq" data-v="${q}">${q}</button>`).join('')}</div>
+ <div class="mini"><div><label class="f">風險等級</label><div class="seg">${[['h','高','bad'],['m','中','pd'],['l','低','na']].map(([k,l,c])=>`<button class="${h.sev===k?'on '+c:''}" data-a="dset" data-k="sev" data-v="${k}">${l}</button>`).join('')}</div></div>
+ <div><label class="f">所屬階段</label><select data-d="stage"><option value="">整體環境</option>${STAGES.map((s,i)=>`<option value="${i}" ${String(h.stage)===String(i)?'selected':''}>${i+1}. ${s.s}</option>`).join('')}</select></div></div>
+ <label class="f">位置</label><input type="text" data-d="where" value="${esc(h.where)}" placeholder="例：C4 柱旁外伸撐座下方">
+ <label class="f">排除對策層級</label><div class="chips">${LV.map(l=>`<button class="tg ${h.lv===l?'on':''}" data-a="dset" data-k="lv" data-v="${l}">${l}</button>`).join('')}</div>
+ <label class="f">具體排除對策</label><textarea data-d="measure" placeholder="例：改由北側迴轉、加設絕緣防護並派專人監視">${esc(h.measure)}</textarea>
+ <label class="f">負責人</label><input type="text" data-d="owner" value="${esc(h.owner)}" list="nl2" placeholder="指派排除負責人"><datalist id="nl2">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+ <div class="mini" style="margin-top:12px"><div><div class="hint">排除前照片</div>${h.ph?`<div class="thumbs"><img src="${esc(h.ph)}" alt=""></div>`:''}<label class="btn sm" style="margin-top:6px">${h.ph?'重拍':'拍照／選照片'}<input type="file" accept="image/*" hidden data-up="ph"></label></div>
+ <div><div class="hint">排除後照片</div>${h.ph2?`<div class="thumbs"><img src="${esc(h.ph2)}" alt=""></div>`:''}<label class="btn sm" style="margin-top:6px">${h.ph2?'重拍':'拍照／選照片'}<input type="file" accept="image/*" hidden data-up="ph2"></label></div></div>
+ <label class="f">處理狀態</label><div class="seg"><button class="${h.status!=='done'?'on pd':''}" data-a="dset" data-k="status" data-v="open">未排除</button><button class="${h.status==='done'?'on ok':''}" data-a="dset" data-k="status" data-v="done">已排除</button></div>
+ <div class="row" style="margin-top:18px">${isNew?'':'<button class="btn red" data-a="hzdel">刪除</button>'}<span class="sp"></span><button class="btn pri big" data-a="hzsave">儲存</button></div>`)}
+function sigSheet(title,note,cb,extra){S.sigcb=cb;openSheet(`<div class="row"><h3 class="sp" style="margin:0">${title}</h3><button class="btn sm" data-a="close">取消</button></div>
+ <p class="hint">${note}</p>${extra||''}<canvas class="pad" id="pad" aria-label="簽名區"></canvas>
+ <div class="row" style="margin-top:12px"><button class="btn" data-a="padclr">清除</button><span class="sp"></span><button class="btn pri big" data-a="padok">確認簽名</button></div>`);setupPad()}
+function setupPad(){const c=$('#pad'),r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;c.width=r.width*dpr;c.height=r.height*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);x.lineWidth=2.6;x.lineCap='round';x.lineJoin='round';x.strokeStyle='#111';c._n=0;let d=false,l=null;
+ const pt=e=>{const b=c.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+ c.onpointerdown=e=>{d=true;l=pt(e);c.setPointerCapture(e.pointerId)};
+ c.onpointermove=e=>{if(!d)return;const q=pt(e);x.beginPath();x.moveTo(l[0],l[1]);x.lineTo(q[0],q[1]);x.stroke();l=q;c._n++};
+ c.onpointerup=c.onpointercancel=()=>{d=false}}
+function padData(){const c=$('#pad');if(!c||c._n<6)return null;const o=document.createElement('canvas');o.width=300;o.height=Math.round(300*c.height/c.width);o.getContext('2d').drawImage(c,0,0,o.width,o.height);return o.toDataURL('image/png')}
+
+/* ---------- 照片 ---------- */
+async function photo(file,max){const url=URL.createObjectURL(file);try{const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=url});
+ const big=!!ASSETS,m=big?(max||1600):640,k=Math.min(1,m/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+ if(ASSETS){const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.72));try{const a=await ASSETS.upload(blob);return a.url||('/_blob/'+a.id)}catch(e){toast('照片上傳失敗，改存為縮圖')}}
+ const k2=Math.min(1,640/Math.max(c.width,c.height)),s2=document.createElement('canvas');s2.width=Math.round(c.width*k2);s2.height=Math.round(c.height*k2);s2.getContext('2d').drawImage(c,0,0,s2.width,s2.height);return s2.toDataURL('image/jpeg',.55)}finally{URL.revokeObjectURL(url)}}
+
+/* ---------- 匯出 ---------- */
+function summary(p){const g=gates(p),c=crewStats(p),s=status(p);
+ return[`【鋼構吊裝 PTP】${pTitle(p)}`,`日期：${p.info.date.v}`,`承攬商：${p.info.contractor.v}`,p.permit?`許可單：${p.permit.no}（${p.permit.fac}）`:'',`構件：${p.info.member.v}`,`風速：${p.info.wind.v||'未填'} m/s`,`狀態：${s.l}${p.rel.at?'（'+p.rel.by+' '+fmt(p.rel.at)+'）':''}`,
+ `出勤 ${c.n} 人・正常 ${c.ok}・異常 ${c.bad}・已簽 ${c.sig}`,`劇本：${p.stages.map((x,i)=>`${i+1}${x.st||'-'}`).join(' ')}`,
+ `危害 ${p.hz.length} 項（未排除 ${p.hz.filter(h=>h.status!=='done').length}）`,...p.hz.map(h=>`  #${hzNo(p,h)} [${SEV[h.sev]}] ${h.title}｜${h.measure||'待訂對策'}｜${h.owner||'未指派'}｜${h.status==='done'?'已排除':'未排除'}`),
+ '放行條件：',...g.map(x=>`  ${x.ok?'✓':'✕'} ${x.t}（${x.d}）`),...p.revs.map((r,k)=>`修訂${k+1} ${fmt(r.at)}：${r.why.join('、')}｜${r.measure}`)].filter(Boolean).join('\n')}
+async function inline(u){if(!u||u.startsWith('data:'))return u;try{const b=await (await fetch(u)).blob();return await new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)})}catch(e){return''}}
+async function report(p){const g=gates(p),s=status(p);const ph={};for(const h of p.hz){ph[h.id]=[await inline(h.ph),await inline(h.ph2)]}const site=await inline(p.site);
+ const td=v=>`<td>${esc(v)}</td>`;
+ return`<!DOCTYPE html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PTP ${esc(pTitle(p))}</title><style>body{font:14px/1.5 "Noto Sans TC","PingFang TC",sans-serif;margin:24px;color:#111}h1{font-size:22px;margin:0}h2{font-size:16px;background:#1d3446;color:#fff;padding:6px 10px;margin:22px 0 8px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #999;padding:5px 8px;vertical-align:top;text-align:left}th{background:#eee}.ok{color:#16824a;font-weight:700}.ng{color:#d3261d;font-weight:700}img.s{height:44px}img.p{width:150px;margin:2px}@media print{h2{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
+ <h1>鋼構吊掛作業前危害辨識計畫 (PTP)</h1><p>${esc(pTitle(p))}｜狀態：<b>${esc(s.l)}</b>${p.rel.at?`｜放行：${esc(p.rel.by)} ${fmt(p.rel.at)}`:''}｜產出：${fmt(Date.now())}</p>
+ ${p.permit?`<p>許可單 ${esc(p.permit.no)}・${esc(p.permit.fac)}・工安 ${esc(p.permit.safety)} ${esc(p.permit.safetyTel)}・監工 ${esc(p.permit.sup)} ${esc(p.permit.supTel)}</p>`:''}
+ <h2>01 基本資訊與介面管制</h2><table><tr><th>項目</th><th>內容</th><th>狀態</th></tr>${INFO.flatMap(s=>s.items).map(it=>{const x=p.info[it.k];const st=it.type==='wind'?(windV(p)===null?'待輸入':windV(p)>=10?'強制停工':'正常'):(ST.find(a=>a[0]===(x.st||'pd'))[1]);return`<tr>${td(it.l)}${td(x.v)}<td class="${x.st==='bad'||st==='強制停工'?'ng':x.st==='ok'||st==='正常'?'ok':''}">${esc(st)}</td></tr>`}).join('')}</table>
+ <h2>02 分階段危害辨識與控制對策（排練結果）</h2><table><tr><th>階段</th><th>潛在危害</th><th>控制對策確認</th><th>負責人</th><th>結果</th><th>補充</th></tr>${STAGES.map((st,i)=>{const x=p.stages[i];return`<tr><td>${i+1}. ${st.t}</td><td>${st.h.join('<br>')}</td><td>${st.c.map((c,k)=>`${x.chk[k]?'✓':'□'} ${c}`).join('<br>')}</td>${td(x.who.join('、')||st.r)}<td class="${x.st==='V'?'ok':x.st==='X'?'ng':''}">${x.st||'待確認'}</td>${td(x.note)}</tr>`}).join('')}</table>
+ <h2>現場危害標記與排除</h2>${site?`<img src="${site}" style="max-width:100%;max-height:360px">`:''}<table><tr><th>#</th><th>危害</th><th>等級</th><th>階段/位置</th><th>對策</th><th>負責</th><th>狀態</th><th>照片</th></tr>${p.hz.map((h,k)=>`<tr><td>${k+1}</td>${td(h.title)}${td(SEV[h.sev])}${td((h.stage===''||h.stage==null?'整體':STAGES[+h.stage].s)+' / '+(h.where||''))}${td((h.lv?h.lv+'：':'')+(h.measure||''))}${td(h.owner)}<td class="${h.status==='done'?'ok':'ng'}">${h.status==='done'?'已排除 '+fmt(h.closedAt):'未排除'}</td><td>${ph[h.id].filter(Boolean).map(u=>`<img class="p" src="${u}">`).join('')}</td></tr>`).join('')||'<tr><td colspan="8">無</td></tr>'}</table>
+ <h2>03-A 班組身心狀態與簽署</h2><table><tr><th>#</th><th>角色</th><th>姓名</th><th>身心狀態</th><th>精神/血壓/酒測</th><th>簽名</th><th>備註</th></tr>${p.crew.filter(m=>m.name.trim()).map((m,k)=>{const st=pst(m);return`<tr><td>${k+1}</td>${td(m.role)}${td(m.name)}<td class="${st==='ok'||st==='warn'?'ok':st==='bad'?'ng':''}">${{ok:'正常',warn:'正常(疲勞注意)',bad:'異常(禁止作業)',rep:'已替換',''
+ :'未檢核'}[st]}</td>${td([m.fat?FAT[m.fat]:'',m.bp,m.alc&&m.alc+' mg/L'].filter(Boolean).join(' / '))}<td>${m.sig?`<img class="s" src="${m.sig}"><br>${fmt(m.sigAt)}`:''}</td>${td([m.isNew?'新進人員':'',m.rep?'替換為 '+m.rep:''].filter(Boolean).join('；'))}</tr>`}).join('')}</table>
+ <h2>放行條件</h2><table>${g.map(x=>`<tr><td class="${x.ok?'ok':'ng'}">${x.ok?'✓':'✕'}</td>${td(x.t)}${td(x.d)}</tr>`).join('')}</table>${p.rel.sig?`<p>領班放行簽名：<img class="s" src="${p.rel.sig}"> ${esc(p.rel.by)} ${fmt(p.rel.at)}</p>`:''}
+ <h2>03-B 動態修訂紀錄</h2><table><tr><th>次數</th><th>時間</th><th>觸發原因</th><th>新增/調整對策</th><th>領班確認</th><th>業主/安衛複查</th></tr>${p.revs.map((r,k)=>`<tr><td>${k+1}</td>${td(fmt(r.at))}${td(r.why.join('、'))}${td(r.measure)}<td>${esc(r.by)}${r.sig?`<br><img class="s" src="${r.sig}">`:''}</td>${td(r.rv)}</tr>`).join('')||'<tr><td colspan="6">無</td></tr>'}</table>
+ <p style="color:#666">※ 吊車一機三證、鋼索斷股數、卸克規格、吊索夾角等物理防呆項目，請併同 CraneCheck 高風險吊掛檢點表執行放行。</p></body></html>`}
+function hzCSV(p){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ return'﻿'+[['編號','危害','風險等級','階段','位置','對策層級','排除對策','負責人','狀態','建立時間','排除時間'],...p.hz.map((h,k)=>[k+1,h.title,SEV[h.sev],h.stage===''||h.stage==null?'整體環境':STAGES[+h.stage].s,h.where,h.lv,h.measure,h.owner,h.status==='done'?'已排除':'未排除',fmt(h.at),fmt(h.closedAt)])].map(r=>r.map(q).join(',')).join('\r\n')}
+const fname=p=>`PTP_${(p.permit&&p.permit.no)||''}_${pTitle(p).replace(/[\\/:*?"<>|\s;.]+/g,'_').slice(0,30)}`;
+
+/* ---------- 事件 ---------- */
+const A={
+ home(){S.cur=null;S.mark=false;document.body.classList.remove('focus');render();window.scrollTo(0,0)},
+ open(e){S.cur=e.dataset.v;S.tab='info';S.stage=0;render();window.scrollTo(0,0)},
+ blank(){newPTP(null)},
+ permits(){permitSheet()},
+ close(){closeSheet();render()},
+ pick(e){const pm=S.permits.find(x=>x.no===e.dataset.v);if(pm)newPTP(pm)},
+ pfsteel(){S.pf.steel=!S.pf.steel;permitSheet()},
+ tab(e){S.tab=e.dataset.v;S.mark=false;render();window.scrollTo(0,0)},
+ st(e){const x=P().info[e.dataset.k];x.st=e.dataset.v==='pd'?'':e.dataset.v;touch();render()},
+ chg(e){const x=P().info.change,v=e.dataset.v;let s=x.v?x.v.split('、'):[];
+  if(v==='無變更')s=s.includes(v)?[]:[v];else{s=s.filter(a=>a!=='無變更');s=s.includes(v)?s.filter(a=>a!==v):[...s,v]}
+  x.v=s.join('、');if(s.length&&!x.st)x.st='ok';if(s.length&&s[0]!=='無變更')toast('有變更點：排練時請特別說明並標記相關危害');touch();render()},
+ hc(e){const m=P().crew[+e.dataset.i],k=e.dataset.k,v=m.h[k];m.h[k]=v==='ok'?'ng':v==='ng'?'':'ok';if(m.sig&&pst(m)==='bad'){m.sig='';m.sigAt=0;toast('狀態異常，原簽名已作廢')}touch();render()},
+ fat(e){const m=P().crew[+e.dataset.i];m.fat=+e.dataset.v;if(m.fat>=5){m.sig='';m.sigAt=0}if(m.fat===4)toast('疲勞偏高：建議調整為地面工作或加強監看');touch();render()},
+ isnew(e){const m=P().crew[+e.dataset.i];m.isNew=!m.isNew;if(m.isNew){const c=P().info.change;const s=(c.v?c.v.split('、'):[]).filter(a=>a!=='無變更');if(!s.includes('新進人員'))s.push('新進人員');c.v=s.join('、')}touch();render()},
+ addm(){P().crew.push(mem('吊掛手'));touch();render()},
+ rmm(e){const p=P(),m=p.crew[+e.dataset.i];if(m.sig&&!S.cf){S.cf=1;toast('此人已簽名，再按一次移除');setTimeout(()=>S.cf=0,2500);return}p.crew.splice(+e.dataset.i,1);touch();render()},
+ rep(e){const ix=+e.dataset.i;openSheet(`<h3>替換異常人員</h3><p class="hint">原人員保留紀錄並標示已替換，替補人員須重新完成身心檢核與簽名。</p><label class="f">替補人員姓名</label><input type="text" id="repn" placeholder="姓名"><div class="row" style="margin-top:14px"><button class="btn" data-a="close">取消</button><span class="sp"></span><button class="btn pri big" data-a="repok" data-i="${ix}">確認替換</button></div>`)},
+ repok(e){const n=$('#repn').value.trim();if(!n){toast('請輸入替補人員姓名');return}const p=P(),ix=+e.dataset.i,m=p.crew[ix];m.st='rep';m.rep=n;const nm=mem(m.role);nm.name=n;p.crew.splice(ix+1,0,nm);closeSheet();touch();render()},
+ sign(e){const ix=+e.dataset.i,m=P().crew[ix];sigSheet(`${esc(m.role)}・${esc(m.name||'未填姓名')}`,'本人已充分理解今日作業步驟、危害對策、停工權與緊急撤離動線，並確認身心狀態良好。',d=>{m.sig=d;m.sigAt=Date.now()})},
+ padclr(){const c=$('#pad');c.getContext('2d').clearRect(0,0,c.width,c.height);c._n=0},
+ padok(){const d=padData();if(!d){toast('請在框內簽名');return}const cb=S.sigcb;if(cb&&cb(d)===false)return;closeSheet();touch(null,true);render()},
+ stage(e){S.stage=+e.dataset.v;render();const r=$('.rail');if(r&&r.getBoundingClientRect().top<0)r.scrollIntoView({block:'start'})},
+ chk(e){const x=P().stages[S.stage],k=+e.dataset.v;x.chk[k]=!x.chk[k];if(!x.chk[k]&&x.st==='V')x.st='';touch();render()},
+ who(e){const x=P().stages[S.stage],v=e.dataset.v;x.who=x.who.includes(v)?x.who.filter(a=>a!==v):[...x.who,v];touch();render()},
+ sx(e){const x=P().stages[S.stage],st=STAGES[S.stage],v=e.dataset.v;
+  if(v==='V'&&st.c.some((_,k)=>!x.chk[k])){toast('還有控制對策未確認，請逐條唸出並確認');return}
+  if(v==='V'&&P().hz.some(h=>+h.stage===S.stage&&h.stage!==''&&h.sev==='h'&&h.status!=='done')){toast('本階段有高風險危害未排除');return}
+  x.st=x.st===v?'':v;touch();render();if(x.st==='X'){toast('已暫停：記錄原因並標記危害');const t=$(`[data-f="stages.${S.stage}.note"]`);t&&t.focus()}},
+ focus(){document.body.classList.add('focus');window.scrollTo(0,0)},
+ unfocus(){document.body.classList.remove('focus')},
+ hznew(e){const st=e.dataset.v;hzSheet({id:uid(),title:'',sev:'h',stage:st,where:'',lv:'',measure:'',owner:'',ph:'',ph2:'',status:'open',at:Date.now(),closedAt:0,pin:null})},
+ hzedit(e){if(S.mark)return;const h=P().hz.find(x=>x.id===e.dataset.v);if(h)hzSheet(JSON.parse(JSON.stringify(h)))},
+ hzq(e){const i=$('[data-d=title]');i.value=i.value?i.value+'、'+e.dataset.v:e.dataset.v;S.draft.title=i.value},
+ dset(e){const d=S.draft;d[e.dataset.k]=e.dataset.v;keepDraft();hzSheet(d)},
+ hzsave(){keepDraft();const p=P(),d=S.draft;if(!d.title.trim()){toast('請填寫危害描述');return}
+  if(d.status==='done'&&!d.measure.trim()){toast('結案前請填寫具體排除對策');return}
+  if(d.status==='done'&&!d.closedAt)d.closedAt=Date.now();if(d.status!=='done')d.closedAt=0;
+  const i=p.hz.findIndex(x=>x.id===d.id);if(i>=0)p.hz[i]=d;else p.hz.push(d);
+  if(d.stage!==''&&d.sev==='h'&&d.status!=='done'&&p.stages[+d.stage].st==='V')p.stages[+d.stage].st='';
+  closeSheet();touch(null,true);render()},
+ hzdel(){const p=P();if(!S.cf){S.cf=1;toast('再按一次確認刪除');setTimeout(()=>S.cf=0,2500);return}S.cf=0;p.hz=p.hz.filter(x=>x.id!==S.draft.id);closeSheet();touch(null,true);render()},
+ hzf(e){S.hzf=e.dataset.v;render()},
+ mark(){S.mark=!S.mark;render();if(S.mark)toast('點照片上的危害位置')},
+ release(){const p=P();if(!gates(p).every(x=>x.ok))return;const by=(active(p).find(m=>m.role==='領班')||{}).name||p.info.foreman.v||'';
+  sigSheet('領班放行簽名','確認以上條件全數通過，班組已完成吊裝劇本排練，同意開始吊裝作業。',d=>{const n=$('#relby').value.trim();if(!n){toast('請填寫領班姓名');return false}p.rel={state:'go',at:Date.now(),by:n,sig:d}},`<label class="f">領班姓名</label><input type="text" id="relby" value="${esc(by)}" style="margin-bottom:10px">`)},
+ rev(){const p=P();S.rv={why:[]};const by=(active(p).find(m=>m.role==='領班')||{}).name||'';
+  sigSheet('暫停並重新評估','條件變更時立即暫停作業，記錄觸發原因與新增對策，由領班簽名確認。',d=>{const ms=$('#rvm').value.trim();if(!S.rv.why.length||!ms){toast('請選擇觸發原因並填寫對策');return false}
+   p.revs.push({at:Date.now(),why:S.rv.why,measure:ms,by:$('#rvb').value.trim(),rv:$('#rvr').value.trim(),sig:d});if(p.rel.state==='go')p.rel.state='pause';
+   if(S.rv.why.some(w=>/風速/.test(w)))toast('請到基本資訊更新實測風速')},
+   `<label class="f">觸發變更原因</label><div class="chips" id="rvw">${TRIG.map(t=>`<button class="tg" data-a="rvw" data-v="${t}">${t}</button>`).join('')}</div>
+   <label class="f">新增／調整之具體控制對策</label><textarea id="rvm"></textarea><div class="mini"><div><label class="f">領班</label><input type="text" id="rvb" value="${esc(by)}"></div><div><label class="f">業主／安衛複查（選填）</label><input type="text" id="rvr"></div></div><label class="f">領班簽名</label>`)},
+ rvw(e){const v=e.dataset.v,w=S.rv.why;S.rv.why=w.includes(v)?w.filter(a=>a!==v):[...w,v];e.classList.toggle('on')},
+ async dlrep(){const p=P();if(!DL)return;try{const html=await report(p);await DL.save({filename:fname(p)+'.html',data:html});toast('報告已下載')}catch(e){if(e&&e.code!=='declined')toast('無法下載：'+(e&&e.code||'錯誤'))}},
+ async dlcsv(){const p=P();if(!DL)return;try{await DL.save({filename:fname(p)+'_危害清單.csv',data:hzCSV(p)})}catch(e){if(e&&e.code!=='declined')toast('無法下載')}},
+ copy(){const t=summary(P());try{navigator.clipboard.writeText(t).then(()=>toast('已複製摘要'),()=>showText(t))}catch(e){showText(t)}},
+ del(){openSheet(`<h3>刪除此 PTP？</h3><p>「${esc(pTitle(P()))}」的所有紀錄、簽名與危害將一併刪除，無法復原。</p><div class="row"><button class="btn" data-a="close">取消</button><span class="sp"></span><button class="btn red big" data-a="delok">刪除</button></div>`)},
+ async delok(){const id=S.cur;delete S.ptps[id];S.cur=null;closeSheet();persistLocal();render();if(DB&&!S.ro){try{await DB.collection('ptp').doc(id).delete()}catch(e){toast('雲端刪除失敗')}}}};
+function showText(t){openSheet(`<div class="row"><h3 class="sp" style="margin:0">摘要文字</h3><button class="btn sm" data-a="close">關閉</button></div><p class="hint">長按全選後複製。</p><textarea style="min-height:50vh" readonly>${esc(t)}</textarea>`)}
+function keepDraft(){const d=S.draft;if(!d)return;document.querySelectorAll('[data-d]').forEach(el=>{d[el.dataset.d]=el.value})}
+
+document.addEventListener('click',e=>{
+ const site=e.target.closest('#site');if(site&&S.mark&&!e.target.closest('.pin')){const r=site.getBoundingClientRect();const pin={x:+((e.clientX-r.left)/r.width*100).toFixed(1),y:+((e.clientY-r.top)/r.height*100).toFixed(1)};S.mark=false;
+  hzSheet({id:uid(),title:'',sev:'h',stage:'',where:'',lv:'',measure:'',owner:'',ph:'',ph2:'',status:'open',at:Date.now(),closedAt:0,pin});return}
+ const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const f=A[b.dataset.a];if(f){e.preventDefault();f(b,e)}});
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet'){closeSheet();render()}});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.pf){S.pf[t.dataset.pf]=t.value;if(t.tagName==='INPUT'){clearTimeout(S.pft);S.pft=setTimeout(()=>{const pos=t.selectionStart;permitSheet();const n=$('[data-pf=q]');if(n){n.focus();n.setSelectionRange(pos,pos)}},250)}return}
+ if(t.dataset.d&&S.draft){S.draft[t.dataset.d]=t.value;return}
+ const f=t.dataset.f;if(!f||!P())return;const k=f.split('.');let o=P();for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=t.value;
+ if(f==='info.wind.v')P().info.wind.st=t.value===''?'':(+t.value>=10?'bad':'ok');
+ if(/^crew\.\d+\.name$/.test(f)){const m=o;if(m.role==='領班'&&!P().info.foreman.v)P().info.foreman.v=t.value}
+ touch()});
+document.addEventListener('change',async e=>{const t=e.target;
+ if(t.dataset.pf){S.pf[t.dataset.pf]=t.value;permitSheet();return}
+ if(t.dataset.f&&(t.dataset.r||t.tagName==='SELECT')){render();return}
+ const up=t.dataset.up;if(!up||!t.files||!t.files[0])return;const file=t.files[0];
+ if(up==='csv'){const r=new FileReader();r.onload=()=>importCSV(String(r.result));r.onerror=()=>toast('讀取檔案失敗');r.readAsText(file,'utf-8');return}
+ toast('照片處理中…');try{const u=await photo(file,up==='site'?2000:1600);
+  if(up==='site'){P().site=u;touch(null,true);render()}else if(S.draft){keepDraft();S.draft[up]=u;hzSheet(S.draft)}toast('照片已加入')}catch(err){toast('無法讀取這張照片')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden){closeSheet();render()}
+ if(P()&&S.tab==='run'&&$('#sheet').hidden&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){if(e.key==='ArrowRight'&&S.stage<5){S.stage++;render()}if(e.key==='ArrowLeft'&&S.stage>0){S.stage--;render()}}});
+
+render();initCaps();
+}
+</script>
+</body>
+</html>
