@@ -1,0 +1,1573 @@
+{
+ "version": 1,
+ "note": "示範資料，全部為虛構人員與案件",
+ "ptps": [
+  {
+   "id": "demo-a",
+   "createdAt": 1795735800000,
+   "updatedAt": 1795745700000,
+   "permit": {
+    "fac": "F22P4",
+    "no": "DEMO-24001",
+    "main": "示範營造(F22P4)",
+    "sub": "宏昇鋼構",
+    "area": "FAB棟L30樓C柱到F柱;4柱到7柱.",
+    "content": "車號:KR-26\n吊掛物:主樑 H900×300、次樑\n預計吊掛物最大重量： 6.8T\n吊車操作手: 張文雄\n指揮吊掛手: 李國華\n吊車公司:示範吊車有限公司",
+    "start": "2026-11-27",
+    "end": "2026-11-27",
+    "risk": "Level1",
+    "detail": "全吊車",
+    "state": "待施作",
+    "safety": "周雅婷",
+    "safetyTel": "0900-000-101",
+    "sup": "蔡宗翰",
+    "supTel": "0900-000-102",
+    "car": "KR-26",
+    "items": "主樑 H900×300、次樑",
+    "wt": "6.8 t",
+    "ops": [
+     "張文雄"
+    ],
+    "sig": [
+     "李國華"
+    ],
+    "company": "示範吊車有限公司",
+    "steel": true
+   },
+   "info": {
+    "date": {
+     "v": "2026/11/27 08:00–17:00",
+     "st": "ok"
+    },
+    "contractor": {
+     "v": "示範營造(F22P4) / 宏昇鋼構 A3 班",
+     "st": "ok"
+    },
+    "loc": {
+     "v": "FAB L30 / Grid C–F, 4–7",
+     "st": "ok"
+    },
+    "member": {
+     "v": "主樑 H900×300，單件最大 6.8 t、長 12 m；次樑 1.2 t",
+     "st": "ok"
+    },
+    "wind": {
+     "v": "4.6",
+     "st": "ok"
+    },
+    "change": {
+     "v": "新進人員、新增障礙物",
+     "st": "ok"
+    },
+    "foreman": {
+     "v": "林志成",
+     "st": "ok"
+    },
+    "operator": {
+     "v": "張文雄（KR-26 80t 全地形吊車）",
+     "st": "ok"
+    },
+    "signal": {
+     "v": "指揮手 李國華；吊掛手 陳俊宏、黃信義",
+     "st": "ok"
+    },
+    "traffic": {
+     "v": "吳明德（南側出入口）",
+     "st": "ok"
+    },
+    "radio": {
+     "v": "CH-7 專用；E 軸盲區由鄭志偉中繼；停止＝長哨一聲",
+     "st": "ok"
+    },
+    "stopwork": {
+     "v": "07:40 晨會向全員宣達",
+     "st": "ok"
+    },
+    "crane": {
+     "v": "外伸撐座加鋪 1.5m×1.5m 鋼板，查竣工圖下方無管線",
+     "st": "ok"
+    },
+    "obstacle": {
+     "v": "E–F/4 臨時電源線已改道；D/6 鋼構堆置區",
+     "st": "ok"
+    },
+    "simops": {
+     "v": "L20 機電管架 10:00–11:30 撤出吊運路徑下方",
+     "st": "ok"
+    },
+    "barrier": {
+     "v": "C–E/5–7 圍籬+警示帶，南側單一出入口",
+     "st": "ok"
+    },
+    "fall": {
+     "v": "L30 C–F 軸鋼樑設水平母索，雙大鉤掛於母索",
+     "st": "ok"
+    },
+    "ppe": {
+     "v": "全員檢查完畢",
+     "st": "ok"
+    },
+    "drop": {
+     "v": "工具繫繩、螺栓防漏袋 4 只",
+     "st": "ok"
+    },
+    "rescue": {
+     "v": "高空作業車停 C/7，緩降組於 L30 樓梯間",
+     "st": "ok"
+    },
+    "emerg": {
+     "v": "應變中心 #5119，集合點南側大門，救護車由 3 號門進",
+     "st": "ok"
+    }
+   },
+   "crew": [
+    {
+     "id": "m0",
+     "role": "領班",
+     "name": "林志成",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 1,
+     "bp": "126/80",
+     "alc": "0.00",
+     "sig": "demo/sig0.png",
+     "sigAt": 1795736700000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m1",
+     "role": "吊車操作手",
+     "name": "張文雄",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "132/84",
+     "alc": "0.00",
+     "sig": "demo/sig1.png",
+     "sigAt": 1795736760000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m2",
+     "role": "吊掛指揮手",
+     "name": "李國華",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "118/76",
+     "alc": "0.00",
+     "sig": "demo/sig2.png",
+     "sigAt": 1795736760000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m3",
+     "role": "吊掛手",
+     "name": "陳俊宏",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig3.png",
+     "sigAt": 1795736820000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m4",
+     "role": "吊掛手",
+     "name": "黃信義",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 3,
+     "bp": "138/88",
+     "alc": "0.00",
+     "sig": "demo/sig4.png",
+     "sigAt": 1795736820000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m5",
+     "role": "高空接料工",
+     "name": "劉家豪",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 1,
+     "bp": "121/78",
+     "alc": "0.00",
+     "sig": "demo/sig5.png",
+     "sigAt": 1795736880000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m6",
+     "role": "高空接料工",
+     "name": "鄭志偉",
+     "isNew": true,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "124/82",
+     "alc": "0.00",
+     "sig": "demo/sig6.png",
+     "sigAt": 1795736880000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m7",
+     "role": "地面交管人員",
+     "name": "吳明德",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig7.png",
+     "sigAt": 1795736940000,
+     "st": "",
+     "rep": ""
+    }
+   ],
+   "stages": [
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "D/6 堆置區枕木換新 2 支",
+     "who": [
+      "陳俊宏",
+      "黃信義",
+      "林志成"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "陳俊宏",
+      "張文雄"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "E 軸盲區由鄭志偉無線電中繼",
+     "who": [
+      "李國華",
+      "吳明德"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "鄭志偉為新進人員，由劉家豪全程帶班",
+     "who": [
+      "劉家豪",
+      "鄭志偉"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "劉家豪",
+      "李國華"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "林志成"
+     ]
+    }
+   ],
+   "hz": [
+    {
+     "id": "hz1",
+     "title": "吊運路徑上方臨時電源線",
+     "sev": "h",
+     "stage": "2",
+     "where": "E–F / 4 上方",
+     "lv": "工程控制",
+     "measure": "電源線改道至 F 軸外側並加絕緣套管，指揮手確認淨距 ≥ 3 m",
+     "owner": "吳明德",
+     "ph": "demo/h1a.jpg",
+     "ph2": "demo/h1b.jpg",
+     "status": "done",
+     "at": 1795737300000,
+     "closedAt": 1795738200000,
+     "pin": {
+      "x": 78.0,
+      "y": 23.0
+     }
+    },
+    {
+     "id": "hz2",
+     "title": "外伸撐座下方墊板不足",
+     "sev": "h",
+     "stage": "",
+     "where": "C / 7 吊車北側撐座",
+     "lv": "工程控制",
+     "measure": "加鋪 1.5m×1.5m 鋼板，重新水平確認",
+     "owner": "張文雄",
+     "ph": "demo/h2a.jpg",
+     "ph2": "demo/h2b.jpg",
+     "status": "done",
+     "at": 1795737480000,
+     "closedAt": 1795738320000,
+     "pin": {
+      "x": 22.0,
+      "y": 78.0
+     }
+    },
+    {
+     "id": "hz3",
+     "title": "機電管架人員位於吊運緩衝區",
+     "sev": "m",
+     "stage": "2",
+     "where": "E–F / 6–7 L20",
+     "lv": "管理控制",
+     "measure": "與機電班協調 10:00–11:30 撤出，交管員現場管制",
+     "owner": "吳明德",
+     "ph": "",
+     "ph2": "",
+     "status": "open",
+     "at": 1795737600000,
+     "closedAt": 0,
+     "pin": {
+      "x": 82.0,
+      "y": 76.0
+     }
+    }
+   ],
+   "site": "demo/site1.jpg",
+   "revs": [],
+   "rel": {
+    "state": "go",
+    "at": 1795738800000,
+    "by": "林志成",
+    "sig": "demo/sig0.png"
+   }
+  },
+  {
+   "id": "demo-b",
+   "createdAt": 1795735200000,
+   "updatedAt": 1795741500000,
+   "permit": {
+    "fac": "F18P1",
+    "no": "DEMO-24002",
+    "main": "示範機電(F18P9)",
+    "sub": "東昇鋼構",
+    "area": "P9 FAB棟LB1樓J柱到M柱;10柱到13柱.",
+    "content": "車號:NE-96\n吊掛物:次樑、斜撐\n預計吊掛物最大重量： 2.4T\n吊車操作手: 許永福\n指揮吊掛手: 謝佳樺",
+    "start": "2026-11-27",
+    "end": "2026-11-27",
+    "risk": "Level1",
+    "detail": "全吊車",
+    "state": "待施作",
+    "safety": "楊淑芬",
+    "safetyTel": "0900-000-201",
+    "sup": "郭建宏",
+    "supTel": "0900-000-202",
+    "car": "NE-96",
+    "items": "次樑、斜撐",
+    "wt": "2.4 t",
+    "ops": [
+     "許永福"
+    ],
+    "sig": [
+     "謝佳樺"
+    ],
+    "company": "",
+    "steel": true
+   },
+   "info": {
+    "date": {
+     "v": "2026/11/27 08:00–17:00",
+     "st": "ok"
+    },
+    "contractor": {
+     "v": "示範機電(F18P9) / 東昇鋼構 B1 班",
+     "st": "ok"
+    },
+    "loc": {
+     "v": "P9 FAB LB1 / Grid J–M, 10–13",
+     "st": "ok"
+    },
+    "member": {
+     "v": "次樑 H400×200 最大 2.4 t、長 9 m；斜撐 0.8 t",
+     "st": "ok"
+    },
+    "wind": {
+     "v": "6.1",
+     "st": "ok"
+    },
+    "change": {
+     "v": "吊車移位、鄰近新工種進場",
+     "st": "ok"
+    },
+    "foreman": {
+     "v": "周子豪",
+     "st": "ok"
+    },
+    "operator": {
+     "v": "許永福（NE-96 50t）",
+     "st": "ok"
+    },
+    "signal": {
+     "v": "指揮手 謝佳樺；吊掛手 江文彬、方志明",
+     "st": "ok"
+    },
+    "traffic": {
+     "v": "洪國峰",
+     "st": "ok"
+    },
+    "radio": {
+     "v": "CH-3；L 軸施工架遮蔽由何俊傑中繼",
+     "st": "ok"
+    },
+    "stopwork": {
+     "v": "07:35 已宣達",
+     "st": "ok"
+    },
+    "crane": {
+     "v": "吊車移至 M/13 外側，撐座鋼板已鋪",
+     "st": "ok"
+    },
+    "obstacle": {
+     "v": "J–K/10 既有施工架、L/12 地面開口",
+     "st": "ok"
+    },
+    "simops": {
+     "v": "J/12 油漆作業同區，待協調",
+     "st": ""
+    },
+    "barrier": {
+     "v": "圍設中，西側尚缺 6 m",
+     "st": ""
+    },
+    "fall": {
+     "v": "K–L 軸尚無水平母索",
+     "st": ""
+    },
+    "ppe": {
+     "v": "已檢查",
+     "st": "ok"
+    },
+    "drop": {
+     "v": "已確認",
+     "st": "ok"
+    },
+    "rescue": {
+     "v": "高空車停 M/10",
+     "st": "ok"
+    },
+    "emerg": {
+     "v": "應變中心 #5119，集合點 P9 東側",
+     "st": "ok"
+    }
+   },
+   "crew": [
+    {
+     "id": "m0",
+     "role": "領班",
+     "name": "周子豪",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "128/84",
+     "alc": "0.00",
+     "sig": "demo/sig8.png",
+     "sigAt": 1795736400000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m1",
+     "role": "吊車操作手",
+     "name": "許永福",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "136/86",
+     "alc": "0.00",
+     "sig": "demo/sig9.png",
+     "sigAt": 1795736460000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m2",
+     "role": "吊掛指揮手",
+     "name": "謝佳樺",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 1,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig10.png",
+     "sigAt": 1795736460000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m3",
+     "role": "吊掛手",
+     "name": "江文彬",
+     "isNew": false,
+     "h": {
+      "sleep": "ng",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 4,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "rep",
+     "rep": "方志明"
+    },
+    {
+     "id": "m4",
+     "role": "吊掛手",
+     "name": "方志明",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "122/80",
+     "alc": "0.00",
+     "sig": "demo/sig11.png",
+     "sigAt": 1795737120000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m5",
+     "role": "高空接料工",
+     "name": "何俊傑",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "130/82",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m6",
+     "role": "高空接料工",
+     "name": "蕭宇翔",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": ""
+     },
+     "fat": 3,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m7",
+     "role": "地面交管人員",
+     "name": "洪國峰",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig12.png",
+     "sigAt": 1795736580000,
+     "st": "",
+     "rep": ""
+    }
+   ],
+   "stages": [
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "方志明",
+      "周子豪"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "吊點護角加裝 2 只",
+     "who": [
+      "方志明",
+      "許永福"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "L 軸施工架遮蔽，由何俊傑中繼指揮",
+     "who": [
+      "謝佳樺",
+      "洪國峰"
+     ]
+    },
+    {
+     "chk": [
+      false,
+      true,
+      true,
+      true
+     ],
+     "st": "X",
+     "note": "K–L 軸無水平母索，接料工無法 100% 掛鉤 → 暫停，請機電班增設鋼樑夾具",
+     "who": [
+      "何俊傑",
+      "蕭宇翔"
+     ]
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    }
+   ],
+   "hz": [
+    {
+     "id": "hz1",
+     "title": "地面開口僅以警示帶圍設",
+     "sev": "h",
+     "stage": "0",
+     "where": "L / 12",
+     "lv": "工程控制",
+     "measure": "加蓋 9 mm 鋼板並以護欄圍設",
+     "owner": "洪國峰",
+     "ph": "demo/h3a.jpg",
+     "ph2": "",
+     "status": "open",
+     "at": 1795739400000,
+     "closedAt": 0,
+     "pin": {
+      "x": 52.0,
+      "y": 76.0
+     }
+    },
+    {
+     "id": "hz2",
+     "title": "K–L 軸無水平母索",
+     "sev": "h",
+     "stage": "3",
+     "where": "K–L / 11 高空",
+     "lv": "工程控制",
+     "measure": "增設鋼樑夾具+水平母索，完成前禁止上樑",
+     "owner": "周子豪",
+     "ph": "",
+     "ph2": "",
+     "status": "open",
+     "at": 1795740600000,
+     "closedAt": 0,
+     "pin": {
+      "x": 33.0,
+      "y": 40.0
+     }
+    },
+    {
+     "id": "hz3",
+     "title": "吊運路徑接近既有施工架",
+     "sev": "m",
+     "stage": "2",
+     "where": "J–K / 10",
+     "lv": "管理控制",
+     "measure": "迴轉時指揮手緩速，牽引繩控制擺幅",
+     "owner": "謝佳樺",
+     "ph": "",
+     "ph2": "",
+     "status": "open",
+     "at": 1795739700000,
+     "closedAt": 0,
+     "pin": {
+      "x": 24.0,
+      "y": 22.0
+     }
+    },
+    {
+     "id": "hz4",
+     "title": "鄰近油漆作業人員",
+     "sev": "m",
+     "stage": "2",
+     "where": "J / 12",
+     "lv": "管理控制",
+     "measure": "",
+     "owner": "洪國峰",
+     "ph": "demo/h4a.jpg",
+     "ph2": "",
+     "status": "open",
+     "at": 1795740000000,
+     "closedAt": 0,
+     "pin": {
+      "x": 20.0,
+      "y": 72.0
+     }
+    }
+   ],
+   "site": "demo/site2.jpg",
+   "revs": [],
+   "rel": {
+    "state": "",
+    "at": 0,
+    "by": "",
+    "sig": ""
+   }
+  },
+  {
+   "id": "demo-c",
+   "createdAt": 1795734600000,
+   "updatedAt": 1795747500000,
+   "permit": {
+    "fac": "F20P1",
+    "no": "DEMO-24003",
+    "main": "示範營造(F20P1)",
+    "sub": "永固鋼構",
+    "area": "CUP棟L20樓A柱到D柱;1柱到4柱.",
+    "content": "車號:LC-23\n吊掛物:屋頂鋼樑、檁條\n預計吊掛物最大重量： 3.5T\n吊車操作手: 簡志明\n指揮吊掛手: 曾文龍",
+    "start": "2026-11-27",
+    "end": "2026-11-27",
+    "risk": "Level1",
+    "detail": "全吊車",
+    "state": "待施作",
+    "safety": "林佩君",
+    "safetyTel": "0900-000-301",
+    "sup": "賴冠宇",
+    "supTel": "0900-000-302",
+    "car": "LC-23",
+    "items": "屋頂鋼樑、檁條",
+    "wt": "3.5 t",
+    "ops": [
+     "簡志明"
+    ],
+    "sig": [
+     "曾文龍"
+    ],
+    "company": "",
+    "steel": true
+   },
+   "info": {
+    "date": {
+     "v": "2026/11/27 07:30–16:30",
+     "st": "ok"
+    },
+    "contractor": {
+     "v": "示範營造(F20P1) / 永固鋼構 C2 班",
+     "st": "ok"
+    },
+    "loc": {
+     "v": "CUP L20 / Grid A–D, 1–4（屋頂）",
+     "st": "ok"
+    },
+    "member": {
+     "v": "屋頂鋼樑最大 3.5 t、長 15 m；檁條 0.4 t",
+     "st": "ok"
+    },
+    "wind": {
+     "v": "11.2",
+     "st": "bad"
+    },
+    "change": {
+     "v": "鄰近新工種進場",
+     "st": "ok"
+    },
+    "foreman": {
+     "v": "彭建華",
+     "st": "ok"
+    },
+    "operator": {
+     "v": "簡志明（LC-23 120t）",
+     "st": "ok"
+    },
+    "signal": {
+     "v": "指揮手 曾文龍；吊掛手 游明哲、廖信宏",
+     "st": "ok"
+    },
+    "traffic": {
+     "v": "潘志強",
+     "st": "ok"
+    },
+    "radio": {
+     "v": "CH-11；塔吊交會時與塔吊指揮共用 CH-12 監聽",
+     "st": "ok"
+    },
+    "stopwork": {
+     "v": "07:20 已宣達",
+     "st": "ok"
+    },
+    "crane": {
+     "v": "地質已確認，撐座鋼板到位",
+     "st": "ok"
+    },
+    "obstacle": {
+     "v": "C–D/1 塔吊迴轉交會區",
+     "st": "ok"
+    },
+    "simops": {
+     "v": "C–D/4 焊接作業（09:50 新增）",
+     "st": "ok"
+    },
+    "barrier": {
+     "v": "完成",
+     "st": "ok"
+    },
+    "fall": {
+     "v": "屋頂母索已設",
+     "st": "ok"
+    },
+    "ppe": {
+     "v": "完成",
+     "st": "ok"
+    },
+    "drop": {
+     "v": "完成",
+     "st": "ok"
+    },
+    "rescue": {
+     "v": "高空車停 A/4",
+     "st": "ok"
+    },
+    "emerg": {
+     "v": "應變中心 #5119，集合點 CUP 北側",
+     "st": "ok"
+    }
+   },
+   "crew": [
+    {
+     "id": "m0",
+     "role": "領班",
+     "name": "彭建華",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "130/84",
+     "alc": "0.00",
+     "sig": "demo/sig13.png",
+     "sigAt": 1795735500000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m1",
+     "role": "吊車操作手",
+     "name": "簡志明",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig1.png",
+     "sigAt": 1795735560000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m2",
+     "role": "吊掛指揮手",
+     "name": "曾文龍",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 1,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig3.png",
+     "sigAt": 1795735560000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m3",
+     "role": "吊掛手",
+     "name": "游明哲",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig5.png",
+     "sigAt": 1795735620000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m4",
+     "role": "吊掛手",
+     "name": "廖信宏",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 3,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig7.png",
+     "sigAt": 1795735620000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m5",
+     "role": "高空接料工",
+     "name": "羅志遠",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "124/78",
+     "alc": "0.00",
+     "sig": "demo/sig9.png",
+     "sigAt": 1795735680000,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m6",
+     "role": "地面交管人員",
+     "name": "潘志強",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "demo/sig11.png",
+     "sigAt": 1795735680000,
+     "st": "",
+     "rep": ""
+    }
+   ],
+   "stages": [
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "游明哲",
+      "廖信宏"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "游明哲",
+      "簡志明"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "塔吊交會區：兩機不同時迴轉，CH-12 監聽",
+     "who": [
+      "曾文龍",
+      "潘志強"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "羅志遠"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "",
+     "who": [
+      "羅志遠",
+      "曾文龍"
+     ]
+    },
+    {
+     "chk": [
+      true,
+      true,
+      true
+     ],
+     "st": "V",
+     "note": "收工前確認屋頂鋼樑過夜斜撐",
+     "who": [
+      "彭建華"
+     ]
+    }
+   ],
+   "hz": [
+    {
+     "id": "hz1",
+     "title": "塔吊迴轉交會區",
+     "sev": "h",
+     "stage": "2",
+     "where": "C–D / 1 上空",
+     "lv": "管理控制",
+     "measure": "與塔吊班協調錯開時段，兩機不同時迴轉，CH-12 互相監聽",
+     "owner": "曾文龍",
+     "ph": "",
+     "ph2": "",
+     "status": "done",
+     "at": 1795734900000,
+     "closedAt": 1795736400000,
+     "pin": {
+      "x": 73.0,
+      "y": 22.0
+     }
+    },
+    {
+     "id": "hz2",
+     "title": "焊接火花掉落至吊掛區",
+     "sev": "m",
+     "stage": "2",
+     "where": "C–D / 4",
+     "lv": "工程控制",
+     "measure": "焊接處下方加設防火毯，吊運時焊接暫停",
+     "owner": "潘志強",
+     "ph": "",
+     "ph2": "",
+     "status": "done",
+     "at": 1795744500000,
+     "closedAt": 1795745100000,
+     "pin": {
+      "x": 79.0,
+      "y": 79.0
+     }
+    }
+   ],
+   "site": "demo/site3.jpg",
+   "revs": [
+    {
+     "at": 1795744200000,
+     "why": [
+      "新增周邊SIMOPS工種"
+     ],
+     "measure": "C–D/4 新增焊接作業：加設防火毯，吊運通過時焊接暫停，交管員管制",
+     "by": "彭建華",
+     "rv": "林佩君",
+     "sig": "demo/sig13.png"
+    },
+    {
+     "at": 1795747200000,
+     "why": [
+      "風速超標/天候突變"
+     ],
+     "measure": "實測陣風 11.2 m/s，已將吊物落地並固定，全員撤至安全區，每 30 分鐘量測一次，連續 2 次 < 10 m/s 才重新評估放行",
+     "by": "彭建華",
+     "rv": "",
+     "sig": "demo/sig13.png"
+    }
+   ],
+   "rel": {
+    "state": "pause",
+    "at": 1795737600000,
+    "by": "彭建華",
+    "sig": "demo/sig13.png"
+   }
+  },
+  {
+   "id": "demo-d",
+   "createdAt": 1795754400000,
+   "updatedAt": 1795755300000,
+   "permit": {
+    "fac": "F25P1",
+    "no": "DEMO-24004",
+    "main": "示範工程(F25P2)",
+    "sub": "大成鋼構",
+    "area": "FAB棟L40樓P柱到T柱;18柱到22柱.",
+    "content": "車號:ZD-28\n吊掛物:鋼柱、鋼樑、鋼梯\n預計吊掛物最大重量： 8.2T\n吊車操作手: 唐國良\n指揮吊掛手: 魏子傑",
+    "start": "2026-11-27",
+    "end": "2026-11-27",
+    "risk": "Level1",
+    "detail": "全吊車",
+    "state": "待施作",
+    "safety": "馬怡君",
+    "safetyTel": "0900-000-401",
+    "sup": "高志明",
+    "supTel": "0900-000-402",
+    "car": "ZD-28",
+    "items": "鋼柱、鋼樑、鋼梯",
+    "wt": "8.2 t",
+    "ops": [
+     "唐國良"
+    ],
+    "sig": [
+     "魏子傑"
+    ],
+    "company": "",
+    "steel": true
+   },
+   "info": {
+    "date": {
+     "v": "2026/11/27 13:00–17:00",
+     "st": "ok"
+    },
+    "contractor": {
+     "v": "示範工程(F25P2) / 大成鋼構 D1 班",
+     "st": "ok"
+    },
+    "loc": {
+     "v": "FAB L40 / Grid P–T, 18–22",
+     "st": "ok"
+    },
+    "member": {
+     "v": "鋼柱最大 8.2 t、長 10 m；鋼樑 4.5 t",
+     "st": "ok"
+    },
+    "wind": {
+     "v": "",
+     "st": ""
+    },
+    "change": {
+     "v": "",
+     "st": ""
+    },
+    "foreman": {
+     "v": "孫建國",
+     "st": ""
+    },
+    "operator": {
+     "v": "唐國良",
+     "st": ""
+    },
+    "signal": {
+     "v": "指揮手 魏子傑",
+     "st": ""
+    },
+    "traffic": {
+     "v": "",
+     "st": ""
+    },
+    "radio": {
+     "v": "",
+     "st": ""
+    },
+    "stopwork": {
+     "v": "",
+     "st": ""
+    },
+    "crane": {
+     "v": "",
+     "st": ""
+    },
+    "obstacle": {
+     "v": "",
+     "st": ""
+    },
+    "simops": {
+     "v": "",
+     "st": ""
+    },
+    "barrier": {
+     "v": "",
+     "st": ""
+    },
+    "fall": {
+     "v": "",
+     "st": ""
+    },
+    "ppe": {
+     "v": "",
+     "st": ""
+    },
+    "drop": {
+     "v": "",
+     "st": ""
+    },
+    "rescue": {
+     "v": "",
+     "st": ""
+    },
+    "emerg": {
+     "v": "",
+     "st": ""
+    }
+   },
+   "crew": [
+    {
+     "id": "m0",
+     "role": "領班",
+     "name": "孫建國",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 2,
+     "bp": "134/86",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m1",
+     "role": "吊車操作手",
+     "name": "唐國良",
+     "isNew": false,
+     "h": {
+      "sleep": "ok",
+      "alcohol": "ok",
+      "body": "ok",
+      "meds": "ok",
+      "mind": "ok"
+     },
+     "fat": 4,
+     "bp": "142/90",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m2",
+     "role": "吊掛指揮手",
+     "name": "魏子傑",
+     "isNew": false,
+     "h": {},
+     "fat": 0,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m3",
+     "role": "吊掛手",
+     "name": "袁志豪",
+     "isNew": false,
+     "h": {},
+     "fat": 0,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m4",
+     "role": "吊掛手",
+     "name": "",
+     "isNew": false,
+     "h": {},
+     "fat": 0,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m5",
+     "role": "高空接料工",
+     "name": "",
+     "isNew": false,
+     "h": {},
+     "fat": 0,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m6",
+     "role": "高空接料工",
+     "name": "",
+     "isNew": false,
+     "h": {},
+     "fat": 0,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    },
+    {
+     "id": "m7",
+     "role": "地面交管人員",
+     "name": "",
+     "isNew": false,
+     "h": {},
+     "fat": 0,
+     "bp": "",
+     "alc": "0.00",
+     "sig": "",
+     "sigAt": 0,
+     "st": "",
+     "rep": ""
+    }
+   ],
+   "stages": [
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    },
+    {
+     "chk": [],
+     "st": "",
+     "note": "",
+     "who": []
+    }
+   ],
+   "hz": [],
+   "site": "",
+   "revs": [],
+   "rel": {
+    "state": "",
+    "at": 0,
+    "by": "",
+    "sig": ""
+   }
+  }
+ ]
+}
